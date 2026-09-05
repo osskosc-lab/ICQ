@@ -71,6 +71,25 @@ def p0b0_checks(cfg: dict, audit: dict) -> dict:
     return checks
 
 
+def protocol_progress_checks(cfg: dict) -> tuple[dict, str]:
+    completed = cfg.get("completed_gates", {})
+    passed = {gate for gate, decision in completed.items() if decision == "PASS"}
+    expected_current = next(
+        (gate for gate in EXPECTED_GATE_ORDER if gate not in passed),
+        "COMPLETE",
+    )
+
+    checks = {
+        "current_gate_matches_first_incomplete":
+            cfg.get("current_gate") == expected_current,
+        "current_gate_eligible_flag_consistent":
+            cfg.get("current_gate_eligible") is (expected_current != "COMPLETE"),
+        "current_gate_execution_not_authorized":
+            cfg.get("current_gate_execution_authorized") is False,
+    }
+    return checks, expected_current
+
+
 def p0b1_checks(cfg: dict, audit: dict) -> dict:
     tol = float(audit["numerical_tolerance"])
     seeds = [int(s) for s in audit["debug_seed_namespace"]]
@@ -110,13 +129,23 @@ def p0b1_checks(cfg: dict, audit: dict) -> dict:
             })
         scenario_rows[scenario] = rows
 
+    heldout = (
+        set(cfg["seed_namespaces"]["p0b2_inactive_direct_heldout"])
+        | set(cfg["seed_namespaces"]["p0b3_direct_active_heldout"])
+        | set(cfg["seed_namespaces"]["p0b4_hidden_proxy_heldout"])
+    )
+    executed = set(seeds)
+
     checks = {
         "inactive_direct_no_q_effect": all_inactive,
         "direct_active_declared_q_effect_only": all_active,
         "hidden_modifier_proxy_no_q_effect": all_hidden,
         "debug_seed_namespace_exact":
             seeds == [int(s) for s in cfg["seed_namespaces"]["debug_only_exposed"]],
-        "no_qualification_seed_executed": True,
+        "executed_debug_seeds_disjoint_from_qualification_banks":
+            not bool(executed & heldout),
+        "no_qualification_seed_executed":
+            not bool(executed & heldout),
     }
     return checks, scenario_rows
 
@@ -133,9 +162,11 @@ def main():
 
     p0 = p0b0_checks(cfg, audit)
     p1, rows = p0b1_checks(cfg, audit)
+    progress, expected_current_gate = protocol_progress_checks(cfg)
 
     p0_pass = all(p0.values())
     p1_pass = all(p1.values())
+    progress_pass = all(progress.values())
 
     payload = {
         "protocol_id": audit["protocol_id"],
@@ -152,12 +183,24 @@ def main():
             "checks": p1,
             "debug_only_rows": rows,
         },
-        "next_gate_eligible": (
+        "audit_scope_next_gate_if_only_p0b0_p0b1_pass":
             "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION"
             if p0_pass and p1_pass
+            else "NONE",
+        "repository_progress_consistency": {
+            "decision": "PASS" if progress_pass else "FAIL_METADATA_INCONSISTENCY",
+            "checks": progress,
+            "expected_current_gate": expected_current_gate,
+            "completed_gates": cfg.get("completed_gates", {}),
+        },
+        "next_gate_eligible": (
+            cfg.get("current_gate")
+            if progress_pass and cfg.get("current_gate_eligible") is True
             else "NONE"
         ),
-        "next_gate_authorized": False,
+        "next_gate_authorized": bool(
+            cfg.get("current_gate_execution_authorized", False)
+        ),
         "qualification_execution_authorized": False,
         "confirmatory_real_data_run_authorized": False,
         "l4_upgrade_authorized": False,
@@ -170,8 +213,9 @@ def main():
     out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(json.dumps(payload, indent=2))
 
-    # A failed audit is an implementation/protocol failure and should fail CI.
-    if not (p0_pass and p1_pass):
+    # A failed audit or inconsistent gate metadata is an implementation/protocol
+    # failure and should fail CI. This does not authorize any qualification run.
+    if not (p0_pass and p1_pass and progress_pass):
         raise SystemExit(1)
 
 

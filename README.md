@@ -386,7 +386,7 @@ Current post-freeze debug state:
 
 ```text
 Unit tests                         PASS
-7 tests passed
+9 tests passed
 Frozen metadata audit             PASS
 Qualification rerun firewall      PASS
 Archive-branch CI                 PASS

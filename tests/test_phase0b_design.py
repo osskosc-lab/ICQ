@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 
 from experiments.phase0b import generate_paired_integrity_case
+from experiments.p0b01_audit import protocol_progress_checks
 from icq_ra import estimate_icq_di
 
 
@@ -121,3 +122,12 @@ def test_p0b01_cli_module_entrypoint_is_importable():
     )
     assert completed.returncode == 0, completed.stderr
     assert "--phase0b-config" in completed.stdout
+
+
+def test_p0b01_progress_metadata_tracks_current_gate():
+    cfg = load_cfg()
+    checks, expected_current_gate = protocol_progress_checks(cfg)
+    assert all(checks.values())
+    assert expected_current_gate == "P0B-3_DIRECT_ACTIVE_SENSITIVITY"
+    assert cfg["current_gate"] == expected_current_gate
+    assert cfg["current_gate_execution_authorized"] is False

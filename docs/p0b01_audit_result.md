@@ -128,7 +128,10 @@ Successful audit head:
 6977d5843e6e3bad65f4be2b7ff5f338ab734037
 ```
 
-## Current gate
+## Gate state at time of formal P0B-0 / P0B-1 audit
+
+This section is historical provenance for the original formal audit. The live repository gate may advance after later gates complete; `configs/phase0b.json` is authoritative for the current gate.
+
 
 ```text
 P0B-0  PASS
