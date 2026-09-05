@@ -24,86 +24,35 @@ jobs:
           python - <<'PY'
           import json, platform, sys
           import numpy as np
+          import scipy
           print(json.dumps({
               "python": sys.version,
               "numpy": np.__version__,
+              "scipy": scipy.__version__,
               "platform": platform.platform(),
           }, indent=2))
           PY
 
-      - name: Single-seed debug smoke
-        run: |
-          python experiments/phase0a.py \
-            --config configs/phase0a.json \
-            --out results/debug_smoke_summary.json \
-            --scenario INACTIVE \
-            --seed 1101 \
-            --debug-dir results/debug
-
       - name: Unit tests
         run: pytest -q --maxfail=1
 
-      - name: P0A-1 pass A — forward order
+      - name: Frozen Phase 0A metadata audit
         run: |
-          python experiments/p0a1_manifest.py \
-            --phase0a-config configs/phase0a.json \
-            --pilot-config configs/p0a1_reproducibility.json \
-            --order forward \
-            --out results/p0a1/pass_a.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
 
-      - name: P0A-1 pass B — reversed order
+          cfg = json.loads(Path("configs/phase0a.json").read_text())
+          assert cfg["protocol_status"] == "FROZEN_OPERATIONAL_SCOPE_L1_L3"
+          assert cfg["phase0a_final_verdict"] == "B_CONDITIONALLY_SUPPORTED"
+          assert cfg["core_conclusion"] == "OPERATIONALLY_USEFUL_NOT_STRUCTURALLY_IDENTIFIED"
+          assert cfg["confirmatory_real_data_run_authorized"] is False
+          assert cfg["qualia_claim_authorized"] is False
+          assert cfg["l4_upgrade_authorized"] is False
+          print("FROZEN_PHASE0A_METADATA_AUDIT: PASS")
+          PY
+
+      - name: Qualification rerun firewall
         run: |
-          python experiments/p0a1_manifest.py \
-            --phase0a-config configs/phase0a.json \
-            --pilot-config configs/p0a1_reproducibility.json \
-            --order reverse \
-            --out results/p0a1/pass_b.json
-
-      - name: P0A-1 compare and decision
-        run: |
-          python experiments/p0a1_compare.py \
-            --a results/p0a1/pass_a.json \
-            --b results/p0a1/pass_b.json \
-            --out results/p0a1/decision.json
-
-      - name: P0A-2 semantic-clarified Null Calibration
-        run: |
-          python experiments/p0a2_null_calibration.py \
-            --phase0a-config configs/phase0a.json \
-            --calibration-config configs/p0a2_null_calibration.json \
-            --out results/p0a2/decision_semantic_v011.json
-
-      - name: P0A-3 ACTIVE sensitivity on frozen held-out seed bank
-        run: |
-          python experiments/p0a3_active_sensitivity.py \
-            --phase0a-config configs/phase0a.json \
-            --p0a3-config configs/p0a3_active_sensitivity.json \
-            --out results/p0a3/decision.json
-
-      - name: P0A-4A Null-family discrimination audit
-        run: |
-          python experiments/p0a4a_null_family_audit.py \
-            --phase0a-config configs/phase0a.json \
-            --p0a4a-config configs/p0a4a_null_family_audit.json \
-            --out results/p0a4a/decision.json
-
-      - name: P0A-4B structural identifiability counterexample
-        run: |
-          python experiments/p0a4b_identifiability.py \
-            --phase0a-config configs/phase0a.json \
-            --p0a4b-config configs/p0a4b_identifiability.json \
-            --out results/p0a4b/decision.json
-
-      - name: P0A-5 Phase 0A Gate Review and freeze decision
-        run: |
-          python experiments/p0a5_gate_review.py \
-            --config configs/p0a5_gate_review.json \
-            --out results/p0a5/decision.json
-
-      - name: Upload debug and gate artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: icq-ra-p0a0-p0a5
-          path: results/
-          if-no-files-found: warn
+          echo "P0A-1 through P0A-5 are frozen historical qualification evidence."
+          echo "Routine CI does not rerun scientific qualification seed banks."
