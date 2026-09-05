@@ -123,8 +123,10 @@ This is the primary protection against mistaking correlation for causal response
 | P0A-1 | Seed reproducibility pilot | **PASS** |
 | P0A-2 | Synthetic Null threshold-exceedance calibration | **PASS** |
 | P0A-3 | ACTIVE sensitivity on frozen held-out seeds | **PASS** |
-| P0A-4 | CONFOUNDED falsification / Phase 0A gate review | **NEXT** |
-| Phase 0A overall qualification | Full gate decision | **NOT YET AUTHORIZED** |
+| P0A-4A | Null-family residual discrimination audit | **PASS_EQUIVALENT** |
+| P0A-4B | Structural identifiability counterexample | **FAIL_NONIDENTIFIABLE** |
+| P0A-5 | Phase 0A Gate Review / Freeze Decision | **FREEZE APPROVED WITH SCOPE LIMITATION** |
+| Phase 0A final status | Operational qualification scope | **FROZEN L1-L3** |
 | Confirmatory real-data run | External/real-system test | **NOT AUTHORIZED** |
 | Qualia claim | Phenomenal interpretation | **NOT AUTHORIZED** |
 
@@ -412,7 +414,7 @@ python experiments/p0a3_active_sensitivity.py \
   --out results/p0a3/decision.json
 ```
 
-GitHub Actions currently executes implementation tests plus the declared P0A-1, P0A-2, and P0A-3 qualification checks and uploads gate artifacts.
+The qualification chain P0A-1 through P0A-5 has been completed and archived. After the Phase 0A freeze, routine CI is restricted to implementation/debug tests so the qualification seed banks are not repeatedly treated as held-out evidence.
 
 ---
 
@@ -425,14 +427,15 @@ P0A-0  PASS
 P0A-1  PASS
 P0A-2  PASS
 P0A-3  PASS
+P0A-4A PASS_EQUIVALENT
+P0A-4B FAIL_NONIDENTIFIABLE
+P0A-5  FREEZE_APPROVED_WITH_SCOPE_LIMITATION
 
-NEXT:
-P0A-4 CONFOUNDED FALSIFICATION
-or Phase 0A Gate Review
-
-PHASE0A OVERALL QUALIFICATION   NOT YET
-CONFIRMATORY REAL-DATA RUN      NOT AUTHORIZED
-QUALIA CLAIM                    NOT AUTHORIZED
+FINAL VERDICT                  B — CONDITIONALLY_SUPPORTED
+PHASE0A STATUS                 FROZEN_OPERATIONAL_SCOPE_L1_L3
+L4 STRUCTURAL IDENTIFICATION   REJECTED_NONIDENTIFIABLE
+CONFIRMATORY REAL-DATA RUN     NOT AUTHORIZED
+QUALIA CLAIM                   NOT AUTHORIZED
 ```
 
 Passing synthetic qualification gates does not establish that ICQ-RA identifies consciousness, subjective experience, or qualia.
@@ -446,3 +449,43 @@ Passing synthetic qualification gates does not establish that ICQ-RA identifies 
 - [P0A-1 reproducibility](docs/p0a1_reproducibility.md)
 - [P0A-2 Null calibration](docs/p0a2_null_calibration.md)
 - [P0A-3 ACTIVE sensitivity](docs/p0a3_active_sensitivity.md)
+
+
+---
+
+## P0A-4 / P0A-5 final boundary
+
+P0A-4A found a small but systematic positive Null-family residual:
+
+```text
+mean Delta_N = 0.00507935140306689
+95% CI       = [0.002355609537210807, 0.007803093268922973]
+TOST margin  = +/- 0.01
+decision     = PASS_EQUIVALENT
+```
+
+P0A-4B constructed a hidden-modifier counterexample:
+
+```text
+Z -> Q
+Z x U -> Y
+Q -/-> Y
+
+mean ICQ-RA = 0.21500508978334615
+ACTIVE threshold = 0.15
+
+decision = FAIL_NONIDENTIFIABLE
+```
+
+Therefore:
+
+```text
+Operationally Useful != Structurally Identified
+```
+
+P0A-5 formally froze Phase 0A at L1-L3.
+
+The strongest authorized claim is that ICQ-RA is a reproducible **synthetic response-accessibility detector under the declared Phase 0A conditions**. It is not a unique identifier of Q's causal efficacy.
+
+- [P0A-4 design](docs/p0a4_design.md)
+- [P0A-5 Gate Review](docs/p0a5_gate_review.md)
