@@ -1,26 +1,57 @@
 {
   "protocol_id": "ICQ-RA-P0A-v0.1",
-  "protocol_status": "DRAFT_NOT_FROZEN",
+  "protocol_status": "FROZEN_OPERATIONAL_SCOPE_L1_L3",
   "research_mode": "pipeline_qualification_only",
   "seeds": [
-    1101, 1102, 1103, 1104, 1105,
-    1106, 1107, 1108, 1109, 1110,
-    1111, 1112, 1113, 1114, 1115,
-    1116, 1117, 1118, 1119, 1120,
-    1121, 1122, 1123, 1124, 1125,
-    1126, 1127, 1128, 1129, 1130
+    1101,
+    1102,
+    1103,
+    1104,
+    1105,
+    1106,
+    1107,
+    1108,
+    1109,
+    1110,
+    1111,
+    1112,
+    1113,
+    1114,
+    1115,
+    1116,
+    1117,
+    1118,
+    1119,
+    1120,
+    1121,
+    1122,
+    1123,
+    1124,
+    1125,
+    1126,
+    1127,
+    1128,
+    1129,
+    1130
   ],
   "seed_role": "P0A0_TO_P0A2_DEVELOPMENT_AND_NULL_CALIBRATION_ONLY",
   "n_per_seed": 12000,
-  "intervention_values": [-1.0, 0.0, 1.0],
-  "history_values": [0, 1],
+  "intervention_values": [
+    -1,
+    0,
+    1
+  ],
+  "history_values": [
+    0,
+    1
+  ],
   "intervention_main_effect": 0.7,
   "history_effect": 1.4,
   "active_latent_coupling": 0.9,
   "confounded_q_flip_probability": 0.15,
-  "noise_sigma": 1.0,
-  "histogram_min": -5.0,
-  "histogram_max": 5.0,
+  "noise_sigma": 1,
+  "histogram_min": -5,
+  "histogram_max": 5,
   "histogram_bins": 80,
   "min_cell": 100,
   "n_permutations": 20,
@@ -30,11 +61,28 @@
     "active_ra_mean_min": 0.15,
     "inactive_ra_mean_max": 0.05,
     "confounded_ra_mean_max": 0.05,
-    "confounded_obs_mean_min": 0.20
+    "confounded_obs_mean_min": 0.2
   },
   "per_run_diagnostic_thresholds": {
     "semantics": "SINGLE_RUN_DIAGNOSTIC_THRESHOLDS_NOT_GATE_LEVEL_MEAN_THRESHOLDS",
     "inactive_icq_ra_max": 0.05,
     "confounded_icq_ra_max": 0.05
-  }
+  },
+  "phase0a_final_verdict": "B_CONDITIONALLY_SUPPORTED",
+  "phase0a_gate_review": "FREEZE_APPROVED_WITH_SCOPE_LIMITATION",
+  "supported_levels": [
+    "L1_IMPLEMENTATION",
+    "L2_NULL_CONTROL_WITH_EQUIVALENCE_MARGIN",
+    "L3_RESPONSE_SENSITIVITY"
+  ],
+  "rejected_levels": [
+    "L4_STRUCTURAL_IDENTIFICATION"
+  ],
+  "not_authorized_levels": [
+    "L5_QUALIA_OR_PHENOMENAL"
+  ],
+  "confirmatory_real_data_run_authorized": false,
+  "qualia_claim_authorized": false,
+  "l4_upgrade_authorized": false,
+  "core_conclusion": "OPERATIONALLY_USEFUL_NOT_STRUCTURALLY_IDENTIFIED"
 }
