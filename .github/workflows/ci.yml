@@ -80,10 +80,24 @@ jobs:
             --p0a3-config configs/p0a3_active_sensitivity.json \
             --out results/p0a3/decision.json
 
+      - name: P0A-4A Null-family discrimination audit
+        run: |
+          python experiments/p0a4a_null_family_audit.py \
+            --phase0a-config configs/phase0a.json \
+            --p0a4a-config configs/p0a4a_null_family_audit.json \
+            --out results/p0a4a/decision.json
+
+      - name: P0A-4B structural identifiability counterexample
+        run: |
+          python experiments/p0a4b_identifiability.py \
+            --phase0a-config configs/phase0a.json \
+            --p0a4b-config configs/p0a4b_identifiability.json \
+            --out results/p0a4b/decision.json
+
       - name: Upload debug and gate artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-p0a0-p0a3
+          name: icq-ra-p0a0-p0a4
           path: results/
           if-no-files-found: warn
