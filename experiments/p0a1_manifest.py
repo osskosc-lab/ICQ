@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from experiments.phase0a import run_seed
+from phase0a import run_seed
 from icq_ra.debug import config_fingerprint
 
 
