@@ -2,7 +2,7 @@
   "protocol_id": "ICQ-RA-P0B-2-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-v0.1",
   "gate": "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION",
-  "execution_status": "AUTHORIZED_ONE_SHOT",
+  "execution_status": "COMPLETE_CLOSED",
   "prerequisites": {
     "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
     "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS"
@@ -10,9 +10,36 @@
   "scenario": "INACTIVE_DIRECT",
   "heldout_seed_bank_id": "P0B2-HO-v1",
   "heldout_seeds": [
-    6201,6202,6203,6204,6205,6206,6207,6208,6209,6210,
-    6211,6212,6213,6214,6215,6216,6217,6218,6219,6220,
-    6221,6222,6223,6224,6225,6226,6227,6228,6229,6230
+    6201,
+    6202,
+    6203,
+    6204,
+    6205,
+    6206,
+    6207,
+    6208,
+    6209,
+    6210,
+    6211,
+    6212,
+    6213,
+    6214,
+    6215,
+    6216,
+    6217,
+    6218,
+    6219,
+    6220,
+    6221,
+    6222,
+    6223,
+    6224,
+    6225,
+    6226,
+    6227,
+    6228,
+    6229,
+    6230
   ],
   "expected_seed_count": 30,
   "primary_metric": "mean_seed(ICQ-DI)",
@@ -29,5 +56,14 @@
   "later_gates_authorized": false,
   "confirmatory_real_data_run_authorized": false,
   "l4_upgrade_authorized": false,
-  "qualia_claim_authorized": false
+  "qualia_claim_authorized": false,
+  "execution_authorized": false,
+  "result": {
+    "decision": "PASS",
+    "mean_seed_icq_di": 0.012255957465935682,
+    "threshold_max": 0.05,
+    "workflow_run": 33973310871,
+    "artifact_id": 9971565732,
+    "artifact_sha256": "81ae84ba7a8aa46b35c9f1dc4740a9ebf62cfa886b306c4a442d743030d63ec8"
+  }
 }
