@@ -276,6 +276,56 @@ This is a valid scientific endpoint, not an implementation failure.
 
 ---
 
+### P0B-2 — held-out INACTIVE_DIRECT Null qualification
+
+Frozen held-out bank:
+
+```text
+P0B2-HO-v1
+6201-6230
+n = 30
+```
+
+Frozen rule:
+
+```text
+mean_seed(ICQ-DI) <= 0.05
+```
+
+Observed:
+
+```text
+mean    0.012255957465935682
+std     0.0074248519394979375
+median  0.012447017307577569
+q05     0.0017940479527481055
+q95     0.02303821588814153
+min     0.001435220334024419
+max     0.027490121009634563
+```
+
+Decision:
+
+```text
+PASS
+```
+
+The execution was one-shot. The dedicated workflow was removed after result capture, so the held-out P0B-2 bank is not part of routine CI.
+
+Evidence:
+
+```text
+run: 33973310871
+artifact: icq-ra-p0b2-one-shot
+artifact ID: 9971565732
+SHA-256:
+81ae84ba7a8aa46b35c9f1dc4740a9ebf62cfa886b306c4a442d743030d63ec8
+```
+
+See [P0B-2 result](docs/p0b2_result.md).
+
+---
+
 ## Claim firewall
 
 The following claims are prohibited:
@@ -444,12 +494,13 @@ ICQ-RA-P0B-v0.1
 STATUS:
 DRAFT_FOR_PREREGISTRATION_AUDIT
 
-COMPLETED AUDIT GATES:
+COMPLETED GATES:
 P0B-0 PASS
 P0B-1 PASS
+P0B-2 PASS
 
 CURRENT GATE:
-P0B-2 INACTIVE_DIRECT NULL QUALIFICATION
+P0B-3 DIRECT_ACTIVE SENSITIVITY
 ELIGIBLE / NOT AUTHORIZED
 
 QUALIFICATION EXECUTION:
