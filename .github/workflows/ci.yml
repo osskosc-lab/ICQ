@@ -33,15 +33,43 @@ jobs:
 
       - name: Single-seed debug smoke
         run: |
-          python experiments/phase0a.py             --config configs/phase0a.json             --out results/debug_smoke_summary.json             --scenario INACTIVE             --seed 1101             --debug-dir results/debug
+          python experiments/phase0a.py \
+            --config configs/phase0a.json \
+            --out results/debug_smoke_summary.json \
+            --scenario INACTIVE \
+            --seed 1101 \
+            --debug-dir results/debug
 
       - name: Unit tests
         run: pytest -q --maxfail=1
 
-      - name: Upload debug artifacts
+      - name: P0A-1 pass A — forward order
+        run: |
+          python experiments/p0a1_manifest.py \
+            --phase0a-config configs/phase0a.json \
+            --pilot-config configs/p0a1_reproducibility.json \
+            --order forward \
+            --out results/p0a1/pass_a.json
+
+      - name: P0A-1 pass B — reversed order
+        run: |
+          python experiments/p0a1_manifest.py \
+            --phase0a-config configs/phase0a.json \
+            --pilot-config configs/p0a1_reproducibility.json \
+            --order reverse \
+            --out results/p0a1/pass_b.json
+
+      - name: P0A-1 compare and decision
+        run: |
+          python experiments/p0a1_compare.py \
+            --a results/p0a1/pass_a.json \
+            --b results/p0a1/pass_b.json \
+            --out results/p0a1/decision.json
+
+      - name: Upload debug and P0A-1 artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-debug
+          name: icq-ra-debug-p0a1
           path: results/
           if-no-files-found: warn
