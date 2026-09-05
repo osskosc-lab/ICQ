@@ -94,10 +94,16 @@ jobs:
             --p0a4b-config configs/p0a4b_identifiability.json \
             --out results/p0a4b/decision.json
 
+      - name: P0A-5 Phase 0A Gate Review and freeze decision
+        run: |
+          python experiments/p0a5_gate_review.py \
+            --config configs/p0a5_gate_review.json \
+            --out results/p0a5/decision.json
+
       - name: Upload debug and gate artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-p0a0-p0a4
+          name: icq-ra-p0a0-p0a5
           path: results/
           if-no-files-found: warn
