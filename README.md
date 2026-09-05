@@ -2,31 +2,61 @@
 
 Information Causal Quantity research repository.
 
-This repository currently contains the experimental **ICQ-RA (Response Accessibility)** branch: a falsification-first attempt to operationalize whether a latent internal-state difference can be causally extracted as a difference in observable responses under declared interventions.
+## ICQ-RA Phase 0A — FROZEN
 
-> **Important:** ICQ-RA does not measure qualia, does not establish that qualia exist, and does not identify a phenomenal state.
+**ICQ-RA (Response Accessibility)** is an operational measurement program for testing whether a declared latent-state difference is reflected in observable response distributions under declared interventions and history conditioning.
+
+Phase 0A is complete and frozen.
+
+```text
+FINAL VERDICT
+B — CONDITIONALLY_SUPPORTED
+
+PHASE 0A STATUS
+FROZEN_OPERATIONAL_SCOPE_L1_L3
+
+CORE CONCLUSION
+Operationally Useful != Structurally Identified
+```
+
+> ICQ-RA does not measure qualia, does not establish consciousness, and does not uniquely identify the causal efficacy of latent state Q.
 
 ---
 
-## ICQ-RA: Response Accessibility
+## Frozen epistemic scope
 
-### Minimal research question
+| Level | Status | Authorized interpretation |
+|---|---|---|
+| L1 Implementation | **SUPPORTED** | Numerical implementation and deterministic replay are qualified. |
+| L2 Null Control | **SUPPORTED_WITH_EQUIVALENCE_MARGIN** | Tested Null-family residuals remain within the preregistered practical-equivalence margin. |
+| L3 Response Sensitivity | **SUPPORTED** | The synthetic ACTIVE generator is detected on a frozen held-out seed bank. |
+| L4 Structural Identification | **REJECTED_NONIDENTIFIABLE** | ICQ-RA does not uniquely identify `Q -> Y`. |
+| L5 Qualia / Phenomenal | **NOT AUTHORIZED** | No phenomenal or consciousness claim is permitted. |
 
-Given two latent internal states, can an allowed intervention make their difference observable as a difference in response distributions?
+The Phase 0A claim ceiling is:
+
+> Under the declared synthetic Phase 0A conditions, ICQ-RA is qualified as a reproducible response-accessibility detector with tested Null-control behavior and held-out ACTIVE sensitivity, while unique structural identification of Q's causal efficacy is not supported.
+
+---
+
+## Core estimand
 
 For latent states `q1, q2`, history/context `H`, allowed intervention set `U`, and observable response `Y`:
 
 ```text
-ICQ-RA(q1,q2 | H,U,Y)
-  = max_{u in U} D[
+Delta_RA(q1,q2 | u,H)
+  = JSD(
       P(Y | do(u), q1, H),
       P(Y | do(u), q2, H)
-    ]
+    )
+
+ICQ-RA(q1,q2 | H,U,Y)
+  = max_{u in U} Delta_RA(q1,q2 | u,H)
 ```
 
 Phase 0A fixes `D` to Jensen-Shannon distance.
 
-The empirical estimator uses permutation-null subtraction to reduce finite-sample positive bias:
+The empirical estimator uses permutation-null subtraction:
 
 ```text
 Delta_hat_corrected
@@ -37,47 +67,20 @@ Delta_hat_corrected
     )
 ```
 
-This correction belongs to the estimator. It is not part of the theoretical definition of ICQ-RA.
+This correction is part of the estimator, not the theoretical definition.
 
 ---
 
-## Claim firewall
-
-ICQ-RA is an **operational response-accessibility quantity**.
-
-The following inferences are not authorized:
-
-```text
-ICQ-RA > 0  => qualia exist
-ICQ-RA > 0  => qualia were measured
-ICQ-RA = 0  => qualia are absent
-response difference => phenomenal difference
-```
-
-The strongest permitted interpretation at this stage is:
-
-> A declared latent-state difference survived the specified causal-response accessibility tests under the tested synthetic model and controls.
-
----
-
-## Phase 0A synthetic qualification models
-
-Phase 0A currently uses synthetic structural models with known causal structure.
+## Synthetic qualification models
 
 ### ACTIVE
 
 ```text
 q -> Y
-q x intervention -> response difference
+q x U -> Y
 ```
 
-The latent state causally modulates the response under intervention.
-
-Expected behavior:
-
-```text
-ICQ-RA > Null level
-```
+Expected behavior: ICQ-RA above the declared ACTIVE sensitivity threshold.
 
 ### INACTIVE
 
@@ -86,13 +89,7 @@ q exists
 q -/-> Y
 ```
 
-The latent state exists in the generator but has no structural response path.
-
-Expected behavior:
-
-```text
-ICQ-RA near 0
-```
+Expected behavior: ICQ-RA near the Null region.
 
 ### CONFOUNDED
 
@@ -102,22 +99,23 @@ H -> Y
 q -/-> Y
 ```
 
-History produces observational separation between q groups without a causal q-to-Y path.
+Expected behavior: observational separation can exist while history-conditioned ICQ-RA remains near the Null region.
 
-Expected behavior:
+### Structural counterexample used in P0A-4B
 
 ```text
-OBS-Distance > 0
-history-conditioned ICQ-RA near 0
+Z -> Q
+Z x U -> Y
+Q -/-> Y
 ```
 
-This is the primary protection against mistaking correlation for causal response accessibility.
+This model produced a strong ICQ-RA signal without a direct causal path `Q -> Y`, establishing the Phase 0A non-identifiability boundary.
 
 ---
 
-## Current qualification status
+## Completed gate chain
 
-| Gate | Purpose | Status |
+| Gate | Purpose | Result |
 |---|---|---|
 | P0A-0 | Implementation / debug qualification | **PASS** |
 | P0A-1 | Seed reproducibility pilot | **PASS** |
@@ -125,20 +123,13 @@ This is the primary protection against mistaking correlation for causal response
 | P0A-3 | ACTIVE sensitivity on frozen held-out seeds | **PASS** |
 | P0A-4A | Null-family residual discrimination audit | **PASS_EQUIVALENT** |
 | P0A-4B | Structural identifiability counterexample | **FAIL_NONIDENTIFIABLE** |
-| P0A-5 | Phase 0A Gate Review / Freeze Decision | **FREEZE APPROVED WITH SCOPE LIMITATION** |
-| Phase 0A final status | Operational qualification scope | **FROZEN L1-L3** |
-| Confirmatory real-data run | External/real-system test | **NOT AUTHORIZED** |
-| Qualia claim | Phenomenal interpretation | **NOT AUTHORIZED** |
+| P0A-5 | Phase 0A Gate Review / Freeze Decision | **FREEZE_APPROVED_WITH_SCOPE_LIMITATION** |
 
 ---
 
-## P0A-1 — Seed Reproducibility Pilot
+## Key results
 
-Protocol:
-
-```text
-ICQ-RA-P0A-1-v0.1
-```
+### P0A-1 — deterministic replay
 
 Representative seeds:
 
@@ -146,113 +137,31 @@ Representative seeds:
 1101, 1115, 1130
 ```
 
-Scenarios:
+All 9 scenario × seed cases reproduced exactly across forward and reversed execution order.
+
+Qualified only:
 
 ```text
-ACTIVE
-INACTIVE
-CONFOUNDED
+DETERMINISTIC_SEED_REPRODUCIBILITY
 ```
 
-Nine cases were executed twice in separate Python processes:
-
-- Pass A: forward order
-- Pass B: reversed order
-
-All nine cases matched exactly on:
-
-- dataset SHA-256
-- config SHA-256
-- ICQ-RA
-- OBS-Distance
-- per-intervention ICQ-RA
-- valid-cell counts
-- input invariants
-- estimator reconstruction
-- debug audit
-
-Result:
-
-```text
-P0A-1_SEED_REPRODUCIBILITY_PILOT: PASS
-```
-
-This supports deterministic seed-specific replay only.
-
----
-
-## P0A-2 — Null Calibration
-
-Protocol:
-
-```text
-ICQ-RA-P0A-2-v0.1
-semantic revision: v0.1.1_NO_NUMERIC_CHANGE
-```
-
-The original numeric result is preserved, but the interpretation was narrowed after audit.
-
-### Threshold semantics
-
-Two different decision quantities are now explicitly separated.
-
-Phase 0A gate-level thresholds are **across-seed mean thresholds**:
-
-```text
-ACTIVE mean ICQ-RA      >= 0.15
-INACTIVE mean ICQ-RA    <= 0.05
-CONFOUNDED mean ICQ-RA  <= 0.05
-```
-
-P0A-2 separately uses `0.05` as a **single-run diagnostic threshold**:
-
-```text
-per-run diagnostic exceedance := ICQ-RA > 0.05
-```
-
-The same numeric value does not make these the same estimand.
-
-Therefore:
-
-```text
-P0A-2 threshold-exceedance calibration
-!=
-false-positive rate of the Phase 0A across-seed mean decision rule
-```
-
-### Null results
+### P0A-2 — declared Null calibration
 
 ```text
 INACTIVE
 n = 30
 mean ICQ-RA = 0.010359420576004546
-max = 0.0216481674918528
-diagnostic exceedances = 0/30
+max         = 0.0216481674918528
+diagnostic exceedances > 0.05 = 0/30
 
 CONFOUNDED
 n = 30
 mean ICQ-RA = 0.01479971335029107
-max = 0.03808708582728814
-diagnostic exceedances = 0/30
+max         = 0.03808708582728814
+diagnostic exceedances > 0.05 = 0/30
 ```
 
-Family-specific one-sided 95% exact upper bounds are approximately:
-
-```text
-0.0950
-```
-
-They are **not** interpreted as a family-specific <5% guarantee.
-
-The pooled result is interpreted only for the declared synthetic 50/50 Null mixture:
-
-```text
-P_null
-  = 0.5 * P_INACTIVE
-  + 0.5 * P_CONFOUNDED
-```
-
-Observed:
+For the declared 50/50 synthetic Null mixture:
 
 ```text
 0 / 60 diagnostic exceedances
@@ -260,65 +169,138 @@ one-sided exact 95% upper bound
 = 0.04870291331009752
 ```
 
-Permitted interpretation:
+This pooled bound applies only to the declared synthetic 50/50 mixture. It is not a universal or family-specific false-positive guarantee.
 
-> Under the declared 50/50 synthetic mixture of INACTIVE and CONFOUNDED generators, no per-run diagnostic threshold exceedance occurred across 60 runs, and the mixture-specific one-sided exact 95% upper bound was below 0.05.
+### P0A-3 — held-out ACTIVE sensitivity
 
----
-
-## P0A-3 — ACTIVE Sensitivity Qualification
-
-Protocol:
-
-```text
-ICQ-RA-P0A-3-v0.1
-```
-
-A new seed bank was frozen before execution:
+Frozen seed bank:
 
 ```text
 P0A3-HO-v1
-seeds: 2101-2130
+2101-2130
 n = 30
 ```
 
-Previously observed seeds `1101-1130` are permanently classified as development / Null-calibration seeds and are forbidden from P0A-3.
-
-The runner stops before ACTIVE generation if any seed overlap is detected.
-
-Frozen primary rule:
+Frozen criterion:
 
 ```text
 mean_seed(ICQ-RA) >= 0.15
 ```
 
-Observed held-out ACTIVE result:
+Observed:
 
 ```text
-n       30
 mean    0.2488838299803236
 std     0.010606465726866143
 median  0.24968387098958572
-q05     0.23199263023022018
-q95     0.2628354530472504
 min     0.23012517701890922
 max     0.269254410429106
 ```
 
-Result:
+Decision:
 
 ```text
-0.2488838299803236 >= 0.15
-P0A-3_ACTIVE_SENSITIVITY_QUALIFICATION: PASS
+PASS
 ```
 
-This supports synthetic ACTIVE sensitivity on the frozen held-out seed bank only.
+### P0A-4A — Null-family residual audit
+
+Frozen paired seed bank:
+
+```text
+P0A4A-HO-v1
+3101-3160
+n = 60 pairs
+```
+
+Observed:
+
+```text
+mean Delta_N = 0.00507935140306689
+95% CI       = [0.002355609537210807, 0.007803093268922973]
+TOST margin  = +/- 0.01
+paired sign-flip p = 0.00024
+TOST         = PASS
+```
+
+Interpretation:
+
+> CONFOUNDED is statistically higher than INACTIVE, but the difference remains within the preregistered practical-equivalence margin.
+
+Decision:
+
+```text
+PASS_EQUIVALENT
+```
+
+### P0A-4B — structural non-identifiability
+
+Frozen seed bank:
+
+```text
+P0A4B-HO-v1
+4101-4130
+n = 30 per alternative
+```
+
+The hidden-modifier proxy model:
+
+```text
+Z -> Q
+Z x U -> Y
+Q -/-> Y
+```
+
+produced:
+
+```text
+mean ICQ-RA      = 0.21500508978334615
+ACTIVE threshold = 0.15
+```
+
+Therefore:
+
+```text
+ICQ-RA >= ACTIVE threshold
+does NOT uniquely imply
+Q -> Y
+```
+
+Decision:
+
+```text
+FAIL_NONIDENTIFIABLE
+```
+
+This is a valid scientific endpoint, not an implementation failure.
+
+---
+
+## Claim firewall
+
+The following claims are prohibited:
+
+```text
+ICQ-RA uniquely identifies Q -> Y
+ICQ-RA > 0 implies qualia exist
+ICQ-RA > 0 implies qualia were measured
+ICQ-RA = 0 implies qualia are absent
+response difference implies phenomenal difference
+synthetic qualification proves real-system identification
+```
+
+The working boundary is:
+
+```text
+Response-accessible != Structurally identified
+Response-accessible != Phenomenal
+```
 
 ---
 
 ## Debug and reproducibility layer
 
-The debug system localizes failure in this order:
+Failure localization:
 
 ```text
 ENVIRONMENT
@@ -333,29 +315,58 @@ ENVIRONMENT
 
 Debug reports include:
 
-- Python / NumPy / platform information
-- config SHA-256
-- q / H / u / Y SHA-256 fingerprints
-- per-cell q0 / q1 counts
-- response mean / standard deviation
+- Python / NumPy / platform manifest
+- configuration SHA-256
+- q / H / u / Y fingerprints
+- per-cell sample counts
+- response moments
 - observed JSD
-- permutation-null mean / std / min / max
+- permutation-null statistics
 - corrected JSD
 - per-intervention ICQ-RA
-- reconstructed max-U ICQ-RA
-- independent estimator reconstruction audit
+- estimator reconstruction
 
-The main estimator and debug reconstruction must agree to absolute tolerance:
+The estimator reconstruction tolerance is:
 
 ```text
-1e-12
+absolute tolerance = 1e-12
 ```
 
-Mismatch is an implementation STOP.
+Current post-freeze debug state:
+
+```text
+Unit tests                         PASS
+7 tests passed
+Frozen metadata audit             PASS
+Qualification rerun firewall      PASS
+Archive-branch CI                 PASS
+PR CI                             PASS
+Push CI                           PASS
+```
 
 ---
 
-## Install and test
+## Post-freeze CI policy
+
+Phase 0A qualification evidence is historical and frozen.
+
+Routine CI must **not** rerun P0A-1 through P0A-5 as if their seed banks remained unseen.
+
+Routine CI is restricted to:
+
+```text
+package installation
+unit tests
+environment checks
+frozen Phase 0A metadata audit
+qualification rerun firewall
+```
+
+Historical qualification scripts remain in the repository for auditability and reproducibility, not for generating new held-out evidence.
+
+---
+
+## Install and implementation tests
 
 ```bash
 python -m pip install -r requirements.txt
@@ -363,129 +374,72 @@ python -m pip install -e .
 pytest -q
 ```
 
----
-
-## Single-seed debug replay
-
-```bash
-python experiments/phase0a.py \
-  --config configs/phase0a.json \
-  --out results/replay.json \
-  --scenario CONFOUNDED \
-  --seed 1101 \
-  --debug-dir results/debug
-```
-
-A debug replay never qualifies Phase 0A:
+A debug replay never changes the frozen scientific verdict:
 
 ```text
-DEBUG_PASS != PHASE0A_PASS
+DEBUG_PASS != PHASE0A_REQUALIFICATION
 ```
 
 ---
 
-## Gate execution
+## Archive record
 
-### P0A-1
-
-```bash
-python experiments/p0a1_manifest.py \
-  --phase0a-config configs/phase0a.json \
-  --pilot-config configs/p0a1_reproducibility.json \
-  --order forward \
-  --out results/p0a1/pass_a.json
-```
-
-### P0A-2
-
-```bash
-python experiments/p0a2_null_calibration.py \
-  --phase0a-config configs/phase0a.json \
-  --calibration-config configs/p0a2_null_calibration.json \
-  --out results/p0a2/decision.json
-```
-
-### P0A-3
-
-```bash
-python experiments/p0a3_active_sensitivity.py \
-  --phase0a-config configs/phase0a.json \
-  --p0a3-config configs/p0a3_active_sensitivity.json \
-  --out results/p0a3/decision.json
-```
-
-The qualification chain P0A-1 through P0A-5 has been completed and archived. After the Phase 0A freeze, routine CI is restricted to implementation/debug tests so the qualification seed banks are not repeatedly treated as held-out evidence.
-
----
-
-## Research-state boundary
-
-Current state:
+Phase 0A is fixed by an exact commit and archive branch.
 
 ```text
-P0A-0  PASS
-P0A-1  PASS
-P0A-2  PASS
-P0A-3  PASS
-P0A-4A PASS_EQUIVALENT
-P0A-4B FAIL_NONIDENTIFIABLE
-P0A-5  FREEZE_APPROVED_WITH_SCOPE_LIMITATION
+Archive identifier:
+phase0a-v0.1-frozen
 
-FINAL VERDICT                  B — CONDITIONALLY_SUPPORTED
-PHASE0A STATUS                 FROZEN_OPERATIONAL_SCOPE_L1_L3
-L4 STRUCTURAL IDENTIFICATION   REJECTED_NONIDENTIFIABLE
-CONFIRMATORY REAL-DATA RUN     NOT AUTHORIZED
-QUALIA CLAIM                   NOT AUTHORIZED
+Frozen commit:
+86d8b801f9a1e32a3ffefcf0c404315cd3e1701c
+
+Archive branch:
+archive/phase0a-v0.1-frozen
+
+Release record:
+docs/releases/phase0a-v0.1-frozen.md
 ```
 
-Passing synthetic qualification gates does not establish that ICQ-RA identifies consciousness, subjective experience, or qualia.
+P0A-5 evidence artifact:
+
+```text
+Actions run: 33964427753
+Artifact: icq-ra-p0a0-p0a5
+Artifact ID: 9968964888
+SHA-256:
+aad67ccdcf829a3e4abcfb6a0f4a4b73638df282454d78e9db413bf2a8bf3610
+```
+
+The authoritative scientific status is the frozen Phase 0A protocol and release record. A Git tag or GitHub Release object is not required to interpret the scientific freeze state and is not asserted here unless independently created.
+
+---
+
+## Current authorized next directions
+
+```text
+ARCHIVE_PHASE0A
+PREPARE_LIMITED_SCOPE_MANUSCRIPT
+DESIGN_A_NEW_PROTOCOL_FOR_L4_IDENTIFICATION
+DESIGN_A_SEPARATE_PROTOCOL_FOR_REAL_SYSTEMS
+```
+
+Not authorized under Phase 0A:
+
+```text
+CONFIRMATORY_REAL_DATA_RUN
+L4_UPGRADE
+QUALIA_CLAIM
+```
 
 ---
 
 ## Documentation
 
-- [Phase 0A protocol](docs/phase0a_protocol.md)
+- [Phase 0A frozen protocol](docs/phase0a_protocol.md)
 - [Debugging design](docs/debugging.md)
 - [P0A-1 reproducibility](docs/p0a1_reproducibility.md)
 - [P0A-2 Null calibration](docs/p0a2_null_calibration.md)
 - [P0A-3 ACTIVE sensitivity](docs/p0a3_active_sensitivity.md)
-
-
----
-
-## P0A-4 / P0A-5 final boundary
-
-P0A-4A found a small but systematic positive Null-family residual:
-
-```text
-mean Delta_N = 0.00507935140306689
-95% CI       = [0.002355609537210807, 0.007803093268922973]
-TOST margin  = +/- 0.01
-decision     = PASS_EQUIVALENT
-```
-
-P0A-4B constructed a hidden-modifier counterexample:
-
-```text
-Z -> Q
-Z x U -> Y
-Q -/-> Y
-
-mean ICQ-RA = 0.21500508978334615
-ACTIVE threshold = 0.15
-
-decision = FAIL_NONIDENTIFIABLE
-```
-
-Therefore:
-
-```text
-Operationally Useful != Structurally Identified
-```
-
-P0A-5 formally froze Phase 0A at L1-L3.
-
-The strongest authorized claim is that ICQ-RA is a reproducible **synthetic response-accessibility detector under the declared Phase 0A conditions**. It is not a unique identifier of Q's causal efficacy.
-
-- [P0A-4 design](docs/p0a4_design.md)
+- [P0A-4 orthogonal gate design](docs/p0a4_design.md)
 - [P0A-5 Gate Review](docs/p0a5_gate_review.md)
+- [Phase 0A frozen release record](docs/releases/phase0a-v0.1-frozen.md)
