@@ -414,6 +414,46 @@ The authoritative scientific status is the frozen Phase 0A protocol and release 
 
 ---
 
+## Archive reproducibility hardening
+
+Phase 0A scientific evidence remains frozen at the original archive commit. A separate archival provenance record now captures the software versions explicitly observed in the archive-branch CI log.
+
+```text
+Scientific archive commit:
+86d8b801f9a1e32a3ffefcf0c404315cd3e1701c
+
+Evidence source:
+Actions run 33964641438
+Job 101302489850
+
+Observed runtime:
+Python 3.12.14
+NumPy  2.5.2
+SciPy  1.18.1
+pytest  8.4.2
+```
+
+Evidence-backed package pins are stored in:
+
+```text
+requirements-phase0a-frozen.txt
+```
+
+Detailed provenance and limitations are stored in:
+
+- [Phase 0A frozen environment provenance](docs/phase0a_environment_provenance.md)
+
+This is archival hardening only:
+
+```text
+ARCHIVAL_REPRODUCIBILITY_HARDENED
+NOT_FULL_BITWISE_ENVIRONMENT_LOCK
+```
+
+The record does not rerun qualification seeds, reopen Phase 0A, authorize confirmatory execution, or alter any scientific verdict.
+
+---
+
 ## Current authorized next directions
 
 ```text
