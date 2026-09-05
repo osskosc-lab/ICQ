@@ -1,25 +1,33 @@
 {
   "protocol_id": "ICQ-RA-P0A-2-v0.1",
+  "semantic_revision": "v0.1.1_NO_NUMERIC_CHANGE",
   "gate": "P0A-2_NULL_CALIBRATION",
-  "status": "EXECUTION_AUTHORIZED",
+  "status": "COMPLETED_PASS_SEMANTICS_CLARIFIED",
   "source_config": "configs/phase0a.json",
   "null_scenarios": ["INACTIVE", "CONFOUNDED"],
   "use_all_phase0a_seeds": true,
   "expected_runs_per_scenario": 30,
   "expected_total_null_runs": 60,
-  "threshold_source": {
-    "INACTIVE": "qualification_thresholds.inactive_ra_mean_max",
-    "CONFOUNDED": "qualification_thresholds.confounded_ra_mean_max"
+  "per_run_diagnostic_threshold_source": {
+    "INACTIVE": "per_run_diagnostic_thresholds.inactive_icq_ra_max",
+    "CONFOUNDED": "per_run_diagnostic_thresholds.confounded_icq_ra_max"
   },
-  "exceedance_rule": "ICQ_RA_GREATER_THAN_FIXED_0_05",
+  "threshold_semantics": "PER_RUN_DIAGNOSTIC_EXCEEDANCE_ONLY_NOT_PHASE0A_MEAN_QUALIFICATION",
+  "exceedance_rule": "ICQ_RA_GREATER_THAN_FIXED_PER_RUN_DIAGNOSTIC_0_05",
+  "declared_null_mixture": {
+    "INACTIVE_weight": 0.5,
+    "CONFOUNDED_weight": 0.5,
+    "interpretation": "POOLED_BOUND_APPLIES_ONLY_TO_THIS_DECLARED_50_50_SYNTHETIC_NULL_MIXTURE"
+  },
   "binomial_alpha": 0.05,
   "pass_rule": {
     "all_debug_pass": true,
     "inactive_exceedances_max": 0,
     "confounded_exceedances_max": 0,
-    "pooled_one_sided_95pct_false_positive_upper_max": 0.05
+    "declared_mixture_one_sided_95pct_exceedance_upper_max": 0.05
   },
-  "claim_ceiling": "SYNTHETIC_NULL_FALSE_POSITIVE_CALIBRATION_ONLY",
+  "historical_result_policy": "P0A2_NUMERIC_RESULT_PRESERVED; ONLY_CLAIM_SEMANTICS_NARROWED",
+  "claim_ceiling": "DECLARED_50_50_SYNTHETIC_NULL_MIXTURE_THRESHOLD_EXCEEDANCE_CALIBRATION_ONLY",
   "phase0a_qualification_authorized": false,
   "confirmatory_run_authorized": false,
   "qualia_claim_authorized": false

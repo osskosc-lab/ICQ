@@ -57,10 +57,11 @@ def summarize(values: list[float]) -> dict:
 
 
 def threshold_for(scenario: str, phase_cfg: dict) -> float:
+    d = phase_cfg["per_run_diagnostic_thresholds"]
     if scenario == "INACTIVE":
-        return float(phase_cfg["qualification_thresholds"]["inactive_ra_mean_max"])
+        return float(d["inactive_icq_ra_max"])
     if scenario == "CONFOUNDED":
-        return float(phase_cfg["qualification_thresholds"]["confounded_ra_mean_max"])
+        return float(d["confounded_icq_ra_max"])
     raise ValueError(f"Unsupported null scenario: {scenario}")
 
 
@@ -77,6 +78,10 @@ def main():
     seeds = [int(s) for s in phase_cfg["seeds"]]
     scenarios = list(cal_cfg["null_scenarios"])
     alpha = float(cal_cfg["binomial_alpha"])
+
+    weights = cal_cfg["declared_null_mixture"]
+    if float(weights["INACTIVE_weight"]) != 0.5 or float(weights["CONFOUNDED_weight"]) != 0.5:
+        raise ValueError("P0A-2 pooled interpretation is frozen to the declared 50/50 Null mixture.")
 
     records = {}
     scenario_summary = {}
@@ -99,7 +104,7 @@ def main():
                 "seed": seed,
                 "icq_ra": float(result["icq_ra"]),
                 "obs_distance": float(result["obs_distance"]),
-                "threshold": threshold,
+                "per_run_diagnostic_threshold": threshold,
                 "exceeded": bool(exceeded),
                 "dataset_sha256": debug["dataset_sha256"]["combined"],
                 "debug_pass": bool(debug["debug_pass"]),
@@ -115,15 +120,16 @@ def main():
 
         records[scenario] = scenario_records
         scenario_summary[scenario] = {
-            "threshold": threshold,
+            "per_run_diagnostic_threshold": threshold,
             "icq_ra": summarize(values),
             "exceedances": exceedances,
             "empirical_exceedance_rate": exceedances / len(scenario_records),
-            "one_sided_95pct_false_positive_upper": upper,
+            "family_one_sided_95pct_exceedance_upper": upper,
+            "family_bound_is_not_a_5pct_guarantee": True,
             "all_debug_pass": all(r["debug_pass"] for r in scenario_records),
         }
 
-    pooled_upper = clopper_pearson_upper_one_sided(
+    mixture_upper = clopper_pearson_upper_one_sided(
         pooled_exceedances, pooled_n, alpha
     )
 
@@ -133,19 +139,11 @@ def main():
         "all_debug_pass": bool(all_debug_pass),
         "inactive_exceedances_zero": scenario_summary["INACTIVE"]["exceedances"] == 0,
         "confounded_exceedances_zero": scenario_summary["CONFOUNDED"]["exceedances"] == 0,
-        "inactive_mean_below_fixed_threshold": (
-            scenario_summary["INACTIVE"]["icq_ra"]["mean"]
-            <= scenario_summary["INACTIVE"]["threshold"]
-        ),
-        "confounded_mean_below_fixed_threshold": (
-            scenario_summary["CONFOUNDED"]["icq_ra"]["mean"]
-            <= scenario_summary["CONFOUNDED"]["threshold"]
-        ),
-        "pooled_one_sided_95pct_false_positive_upper_le_0_05": (
-            pooled_upper
+        "declared_50_50_mixture_one_sided_95pct_exceedance_upper_le_0_05": (
+            mixture_upper
             <= float(
                 cal_cfg["pass_rule"][
-                    "pooled_one_sided_95pct_false_positive_upper_max"
+                    "declared_mixture_one_sided_95pct_exceedance_upper_max"
                 ]
             )
         ),
@@ -154,17 +152,19 @@ def main():
     decision = "PASS" if all(checks.values()) else "FAIL"
     payload = {
         "protocol_id": cal_cfg["protocol_id"],
+        "semantic_revision": cal_cfg["semantic_revision"],
         "gate": cal_cfg["gate"],
         "decision": decision,
         "phase0a_config_sha256": config_fingerprint(phase_cfg),
         "calibration_config": cal_cfg,
         "checks": checks,
         "scenario_summary": scenario_summary,
-        "pooled": {
+        "declared_50_50_null_mixture": {
             "n": pooled_n,
             "exceedances": pooled_exceedances,
             "empirical_exceedance_rate": pooled_exceedances / pooled_n,
-            "one_sided_95pct_false_positive_upper": pooled_upper,
+            "one_sided_95pct_exceedance_upper": mixture_upper,
+            "interpretation": "APPLIES_ONLY_TO_DECLARED_50_50_INACTIVE_CONFOUNDED_SYNTHETIC_MIXTURE",
         },
         "records": records,
         "claim_ceiling": cal_cfg["claim_ceiling"],
@@ -179,11 +179,12 @@ def main():
     out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(json.dumps({
         "protocol_id": payload["protocol_id"],
+        "semantic_revision": payload["semantic_revision"],
         "gate": payload["gate"],
         "decision": payload["decision"],
         "checks": payload["checks"],
         "scenario_summary": payload["scenario_summary"],
-        "pooled": payload["pooled"],
+        "declared_50_50_null_mixture": payload["declared_50_50_null_mixture"],
         "next_gate_if_pass": payload["next_gate_if_pass"],
     }, indent=2, ensure_ascii=False))
 

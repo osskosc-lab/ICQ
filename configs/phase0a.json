@@ -10,6 +10,7 @@
     1121, 1122, 1123, 1124, 1125,
     1126, 1127, 1128, 1129, 1130
   ],
+  "seed_role": "P0A0_TO_P0A2_DEVELOPMENT_AND_NULL_CALIBRATION_ONLY",
   "n_per_seed": 12000,
   "intervention_values": [-1.0, 0.0, 1.0],
   "history_values": [0, 1],
@@ -25,9 +26,15 @@
   "n_permutations": 20,
   "estimator_seed_offset": 900000,
   "qualification_thresholds": {
+    "semantics": "ACROSS_SEED_MEAN_THRESHOLDS_FOR_GATE_LEVEL_QUALIFICATION",
     "active_ra_mean_min": 0.15,
     "inactive_ra_mean_max": 0.05,
     "confounded_ra_mean_max": 0.05,
     "confounded_obs_mean_min": 0.20
+  },
+  "per_run_diagnostic_thresholds": {
+    "semantics": "SINGLE_RUN_DIAGNOSTIC_THRESHOLDS_NOT_GATE_LEVEL_MEAN_THRESHOLDS",
+    "inactive_icq_ra_max": 0.05,
+    "confounded_icq_ra_max": 0.05
   }
 }

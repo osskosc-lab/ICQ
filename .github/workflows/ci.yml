@@ -66,17 +66,24 @@ jobs:
             --b results/p0a1/pass_b.json \
             --out results/p0a1/decision.json
 
-      - name: P0A-2 Null Calibration
+      - name: P0A-2 semantic-clarified Null Calibration
         run: |
           python experiments/p0a2_null_calibration.py \
             --phase0a-config configs/phase0a.json \
             --calibration-config configs/p0a2_null_calibration.json \
-            --out results/p0a2/decision.json
+            --out results/p0a2/decision_semantic_v011.json
+
+      - name: P0A-3 ACTIVE sensitivity on frozen held-out seed bank
+        run: |
+          python experiments/p0a3_active_sensitivity.py \
+            --phase0a-config configs/phase0a.json \
+            --p0a3-config configs/p0a3_active_sensitivity.json \
+            --out results/p0a3/decision.json
 
       - name: Upload debug and gate artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-debug-p0a1-p0a2
+          name: icq-ra-p0a0-p0a3
           path: results/
           if-no-files-found: warn
