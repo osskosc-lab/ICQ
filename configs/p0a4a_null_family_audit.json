@@ -1,0 +1,24 @@
+{
+  "protocol_id": "ICQ-RA-P0A-4A-v0.1",
+  "gate": "P0A-4A_NULL_FAMILY_DISCRIMINATION_AUDIT",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "source_config": "configs/phase0a.json",
+  "paired_seed_bank_id": "P0A4A-HO-v1",
+  "paired_seeds": [3101,3102,3103,3104,3105,3106,3107,3108,3109,3110,3111,3112,3113,3114,3115,3116,3117,3118,3119,3120,3121,3122,3123,3124,3125,3126,3127,3128,3129,3130,3131,3132,3133,3134,3135,3136,3137,3138,3139,3140,3141,3142,3143,3144,3145,3146,3147,3148,3149,3150,3151,3152,3153,3154,3155,3156,3157,3158,3159,3160],
+  "forbidden_previously_observed_seed_ranges": ["1101-1130","2101-2130"],
+  "expected_pairs": 60,
+  "estimand": "DELTA_N = mean(ICQ_RA_CONFOUNDED - ICQ_RA_INACTIVE)",
+  "pairing": {"same_H":true,"same_U":true,"same_response_noise":true,"same_sample_size":true,"same_estimator_seed_policy":true},
+  "equivalence_margin": 0.01,
+  "alpha": 0.05,
+  "leakage_test": {"method":"PAIRED_SIGN_FLIP_MONTE_CARLO","alternative":"GREATER","n_permutations":99999,"rng_seed":404001},
+  "equivalence_test": {"method":"PAIRED_TOST_ON_MEAN_DIFFERENCE","lower_bound":-0.01,"upper_bound":0.01,"alpha":0.05},
+  "decision_rule": {
+    "PASS_EQUIVALENT":"TOST passes both one-sided tests",
+    "FAIL_LEAKAGE":"TOST fails AND positive-direction paired sign-flip test p < 0.05 AND mean difference > 0",
+    "INCONCLUSIVE":"all other valid outcomes"
+  },
+  "claim_ceiling":"NULL_FAMILY_RESIDUAL_EQUIVALENCE_ONLY",
+  "phase0a_overall_qualification_authorized":false,
+  "qualia_claim_authorized":false
+}
