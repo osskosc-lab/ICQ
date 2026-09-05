@@ -1,0 +1,16 @@
+# Phase 0A archival environment lock
+# Evidence source:
+#   archive commit: 86d8b801f9a1e32a3ffefcf0c404315cd3e1701c
+#   GitHub Actions run: 33964641438
+#   job: 101302489850
+#
+# This file records package versions explicitly observed in the archived CI log.
+# It is archival provenance only. It is NOT used to rerun or requalify Phase 0A.
+
+numpy==2.5.2
+scipy==1.18.1
+pytest==8.4.2
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+pygments==2.21.0
