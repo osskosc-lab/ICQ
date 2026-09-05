@@ -444,6 +444,14 @@ ICQ-RA-P0B-v0.1
 STATUS:
 DRAFT_FOR_PREREGISTRATION_AUDIT
 
+COMPLETED AUDIT GATES:
+P0B-0 PASS
+P0B-1 PASS
+
+CURRENT GATE:
+P0B-2 INACTIVE_DIRECT NULL QUALIFICATION
+ELIGIBLE / NOT AUTHORIZED
+
 QUALIFICATION EXECUTION:
 NOT AUTHORIZED
 ```
@@ -516,6 +524,7 @@ See:
 
 - [Phase 0B protocol](docs/phase0b_protocol.md)
 - [Phase 0B design rationale](docs/phase0b_design_rationale.md)
+- [P0B-0 / P0B-1 audit result](docs/p0b01_audit_result.md)
 
 ---
 
