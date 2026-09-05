@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icq-ra"
+version = "0.1.0"
+description = "ICQ Response Accessibility synthetic qualification tools"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=2.0,<3"
+]
+
+[tool.setuptools.packages.find]
+include = ["icq_ra*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

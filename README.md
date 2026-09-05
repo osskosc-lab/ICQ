@@ -32,14 +32,35 @@ The empirical estimator subtracts a permutation-null finite-sample bias estimate
 2. **INACTIVE** — latent state exists but has no path to the response. ICQ-RA should remain near zero.
 3. **CONFOUNDED** — history drives both latent state and response, creating observational separation without a latent-state causal path. OBS-Distance should be positive while history-conditioned ICQ-RA remains near zero.
 
-### Run
+### Install and test
 
 ```bash
 python -m pip install -r requirements.txt
-python experiments/phase0a.py --config configs/phase0a.json --out results/phase0a_summary.json
+python -m pip install -e .
 pytest -q
 ```
 
-The full Phase 0A experiment is intentionally **not** run by CI. CI only checks implementation invariants and smoke tests.
+### Full Phase 0A run
 
-See [docs/phase0a_protocol.md](docs/phase0a_protocol.md) for the current research gate and claim firewall.
+```bash
+python experiments/phase0a.py \
+  --config configs/phase0a.json \
+  --out results/phase0a_summary.json
+```
+
+### Single-seed debug replay
+
+```bash
+python experiments/phase0a.py \
+  --config configs/phase0a.json \
+  --out results/replay.json \
+  --scenario CONFOUNDED \
+  --seed 1101 \
+  --debug-dir results/debug
+```
+
+The debug report includes input invariants, data/config SHA-256 fingerprints, per-cell sample and JSD diagnostics, permutation-null statistics, and an independent estimator reconstruction.
+
+The full Phase 0A experiment is intentionally **not** run by CI. CI only checks package installation, one single-seed debug smoke replay, implementation invariants, and unit tests.
+
+See [docs/phase0a_protocol.md](docs/phase0a_protocol.md) for the research gate and [docs/debugging.md](docs/debugging.md) for failure-localization rules.

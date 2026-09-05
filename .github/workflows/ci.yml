@@ -9,10 +9,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install
-        run: python -m pip install -r requirements.txt
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -e .
+
+      - name: Environment manifest
+        run: |
+          python - <<'PY'
+          import json, platform, sys
+          import numpy as np
+          print(json.dumps({
+              "python": sys.version,
+              "numpy": np.__version__,
+              "platform": platform.platform(),
+          }, indent=2))
+          PY
+
+      - name: Single-seed debug smoke
+        run: |
+          python experiments/phase0a.py             --config configs/phase0a.json             --out results/debug_smoke_summary.json             --scenario INACTIVE             --seed 1101             --debug-dir results/debug
+
       - name: Unit tests
-        run: pytest -q
+        run: pytest -q --maxfail=1
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: icq-ra-debug
+          path: results/
+          if-no-files-found: warn

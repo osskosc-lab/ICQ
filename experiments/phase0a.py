@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from icq_ra import estimate_icq_ra, observational_distance
+from icq_ra.debug import build_debug_report
 
 
 def generate_scm(scenario: str, *, seed: int, n: int, cfg: dict):
@@ -42,7 +43,7 @@ def generate_scm(scenario: str, *, seed: int, n: int, cfg: dict):
     return q, h, u, y
 
 
-def run_seed(scenario: str, seed: int, cfg: dict) -> dict:
+def run_seed(scenario: str, seed: int, cfg: dict, *, include_debug: bool = False) -> dict:
     q, h, u, y = generate_scm(
         scenario,
         seed=seed,
@@ -71,13 +72,29 @@ def run_seed(scenario: str, seed: int, cfg: dict) -> dict:
 
     obs = observational_distance(q, y, bin_edges=bin_edges)
 
-    return {
+    result = {
         "seed": seed,
         "icq_ra": ra.value,
         "obs_distance": obs,
         "per_intervention": {str(k): v for k, v in ra.per_intervention.items()},
         "valid_cells": {str(k): v for k, v in ra.valid_cells.items()},
     }
+
+    if include_debug:
+        result["debug"] = build_debug_report(
+            scenario=scenario,
+            seed=seed,
+            cfg=cfg,
+            q=q,
+            h=h,
+            u=u,
+            y=y,
+            estimate=ra,
+            obs_distance=obs,
+            bin_edges=bin_edges,
+        )
+
+    return result
 
 
 def summarize(values):
@@ -119,15 +136,49 @@ def qualification_decision(results: dict, cfg: dict) -> dict:
     }
 
 
+def _write_json(path: Path, payload: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main():
     parser = argparse.ArgumentParser(description="ICQ-RA Phase 0A synthetic qualification")
     parser.add_argument("--config", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--scenario", choices=["ACTIVE", "INACTIVE", "CONFOUNDED"])
+    parser.add_argument("--seed", type=int)
+    parser.add_argument(
+        "--debug-dir",
+        help="Directory for a single-seed diagnostic JSON. Requires --scenario and --seed.",
+    )
     args = parser.parse_args()
 
     cfg = json.loads(Path(args.config).read_text(encoding="utf-8"))
-    seeds = [int(s) for s in cfg["seeds"]]
 
+    single_seed_mode = args.scenario is not None or args.seed is not None or args.debug_dir is not None
+    if single_seed_mode:
+        if args.scenario is None or args.seed is None:
+            parser.error("--scenario and --seed are both required for debug replay mode.")
+
+        result = run_seed(args.scenario, args.seed, cfg, include_debug=True)
+        payload = {
+            "protocol_id": cfg["protocol_id"],
+            "protocol_status": cfg["protocol_status"],
+            "mode": "SINGLE_SEED_DEBUG_REPLAY",
+            "qualification_decision": "NOT_EVALUATED",
+            "result": {k: v for k, v in result.items() if k != "debug"},
+        }
+        _write_json(Path(args.out), payload)
+
+        if args.debug_dir:
+            debug_path = Path(args.debug_dir) / f"{args.scenario.lower()}_seed_{args.seed}.debug.json"
+            _write_json(debug_path, result["debug"])
+            print(f"debug_report={debug_path}")
+
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    seeds = [int(s) for s in cfg["seeds"]]
     results = {}
     for scenario in ("ACTIVE", "INACTIVE", "CONFOUNDED"):
         results[scenario] = [run_seed(scenario, seed, cfg) for seed in seeds]
@@ -135,14 +186,11 @@ def main():
     payload = {
         "protocol_id": cfg["protocol_id"],
         "protocol_status": cfg["protocol_status"],
+        "mode": "PHASE0A_QUALIFICATION",
         "results": results,
         "decision": qualification_decision(results, cfg),
     }
-
-    out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-
+    _write_json(Path(args.out), payload)
     print(json.dumps(payload["decision"], ensure_ascii=False, indent=2))
 
 
