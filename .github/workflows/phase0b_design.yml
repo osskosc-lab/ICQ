@@ -1,0 +1,85 @@
+name: ICQ-RA Phase 0B Design Audit
+
+on:
+  push:
+    paths:
+      - "configs/phase0b.json"
+      - "docs/phase0b_*.md"
+      - "icq_ra/direct_intervention.py"
+      - "experiments/phase0b.py"
+      - "tests/test_phase0b_design.py"
+      - ".github/workflows/phase0b_design.yml"
+  pull_request:
+    paths:
+      - "configs/phase0b.json"
+      - "docs/phase0b_*.md"
+      - "icq_ra/direct_intervention.py"
+      - "experiments/phase0b.py"
+      - "tests/test_phase0b_design.py"
+      - ".github/workflows/phase0b_design.yml"
+
+jobs:
+  design-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -e .
+
+      - name: Phase 0B design tests
+        run: |
+          pytest -q tests/test_phase0b_design.py
+
+      - name: Phase 0B authorization firewall
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("configs/phase0b.json").read_text())
+          assert cfg["protocol_status"] == "DRAFT_FOR_PREREGISTRATION_AUDIT"
+          assert cfg["qualification_execution_authorized"] is False
+          assert cfg["confirmatory_real_data_run_authorized"] is False
+          assert cfg["l5_phenomenal_claim_authorized"] is False
+          print("PHASE0B_AUTHORIZATION_FIREWALL: PASS")
+          PY
+
+      - name: Debug-only DIRECT_ACTIVE smoke
+        run: |
+          python experiments/phase0b.py             --config configs/phase0b.json             --scenario DIRECT_ACTIVE             --seed 6101             --out results/phase0b_debug/direct_active_6101.json
+
+      - name: Debug-only HIDDEN_MODIFIER_PROXY smoke
+        run: |
+          python experiments/phase0b.py             --config configs/phase0b.json             --scenario HIDDEN_MODIFIER_PROXY             --seed 6102             --out results/phase0b_debug/hidden_proxy_6102.json
+
+      - name: Qualification seed firewall check
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("configs/phase0b.json").read_text())
+          debug = set(cfg["seed_namespaces"]["debug_only_exposed"])
+          heldout = (
+              set(cfg["seed_namespaces"]["p0b2_inactive_direct_heldout"])
+              | set(cfg["seed_namespaces"]["p0b3_direct_active_heldout"])
+              | set(cfg["seed_namespaces"]["p0b4_hidden_proxy_heldout"])
+          )
+          assert not (debug & heldout)
+          print("PHASE0B_HELDOUT_SEED_FIREWALL: PASS")
+          PY
+
+      - name: Upload design-debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: icq-ra-phase0b-design-debug
+          path: results/phase0b_debug/
+          if-no-files-found: warn
