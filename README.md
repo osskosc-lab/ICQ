@@ -433,6 +433,92 @@ QUALIA_CLAIM
 
 ---
 
+## Phase 0B — L4 identification protocol (DRAFT)
+
+Phase 0B is a separate protocol created after the frozen Phase 0A non-identifiability result.
+
+```text
+PROTOCOL_ID:
+ICQ-RA-P0B-v0.1
+
+STATUS:
+DRAFT_FOR_PREREGISTRATION_AUDIT
+
+QUALIFICATION EXECUTION:
+NOT AUTHORIZED
+```
+
+The Phase 0B question is narrower than general structural identification:
+
+> If synthetic Q itself can be atomically intervened on, can a direct-intervention response metric distinguish direct Q causal efficacy from the hidden-modifier proxy that defeated Phase 0A?
+
+Primary metric:
+
+```text
+ICQ-DI(Q->Y | H,U)
+=
+max_u weighted_mean_h
+JSD[
+  P(Y | do(Q=0), do(U=u), H=h),
+  P(Y | do(Q=1), do(U=u), H=h)
+]
+```
+
+Primary baseline:
+
+```text
+Phase 0A conditioning-based ICQ-RA
+P(Y | do(U), Q, H)
+```
+
+Primary falsification:
+
+```text
+Z -> Q
+Z x U -> Y
+Q -/-> Y
+```
+
+Required Phase 0B pattern:
+
+```text
+Hidden-proxy Phase 0A baseline:
+mean ICQ-RA >= 0.15
+
+Hidden-proxy direct intervention:
+mean ICQ-DI <= 0.05
+```
+
+Frozen untouched qualification seed banks:
+
+```text
+P0B-2 INACTIVE_DIRECT       6201-6230
+P0B-3 DIRECT_ACTIVE         6301-6330
+P0B-4 HIDDEN_MODIFIER      6401-6430
+```
+
+Routine CI may use only:
+
+```text
+6101-6103
+DEBUG_ONLY_NO_SCIENTIFIC_INFERENCE
+```
+
+Even a complete Phase 0B PASS could support at most:
+
+```text
+L4_CONDITIONALLY_SUPPORTED_FOR_DIRECTLY_INTERVENABLE_SYNTHETIC_Q_ONLY
+```
+
+It would not authorize real-system identification, consciousness claims, or qualia claims.
+
+See:
+
+- [Phase 0B protocol](docs/phase0b_protocol.md)
+- [Phase 0B design rationale](docs/phase0b_design_rationale.md)
+
+---
+
 ## Documentation
 
 - [Phase 0A frozen protocol](docs/phase0a_protocol.md)
