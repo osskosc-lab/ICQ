@@ -1,0 +1,26 @@
+{
+  "protocol_id": "ICQ-RA-P0A-2-v0.1",
+  "gate": "P0A-2_NULL_CALIBRATION",
+  "status": "EXECUTION_AUTHORIZED",
+  "source_config": "configs/phase0a.json",
+  "null_scenarios": ["INACTIVE", "CONFOUNDED"],
+  "use_all_phase0a_seeds": true,
+  "expected_runs_per_scenario": 30,
+  "expected_total_null_runs": 60,
+  "threshold_source": {
+    "INACTIVE": "qualification_thresholds.inactive_ra_mean_max",
+    "CONFOUNDED": "qualification_thresholds.confounded_ra_mean_max"
+  },
+  "exceedance_rule": "ICQ_RA_GREATER_THAN_FIXED_0_05",
+  "binomial_alpha": 0.05,
+  "pass_rule": {
+    "all_debug_pass": true,
+    "inactive_exceedances_max": 0,
+    "confounded_exceedances_max": 0,
+    "pooled_one_sided_95pct_false_positive_upper_max": 0.05
+  },
+  "claim_ceiling": "SYNTHETIC_NULL_FALSE_POSITIVE_CALIBRATION_ONLY",
+  "phase0a_qualification_authorized": false,
+  "confirmatory_run_authorized": false,
+  "qualia_claim_authorized": false
+}
