@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from phase0b import generate_paired_integrity_case
+from experiments.phase0b import generate_paired_integrity_case
 
 
 EXPECTED_GATE_ORDER = [

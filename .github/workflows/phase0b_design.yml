@@ -4,17 +4,23 @@ on:
   push:
     paths:
       - "configs/phase0b.json"
+      - "configs/p0b01_audit.json"
       - "docs/phase0b_*.md"
       - "icq_ra/direct_intervention.py"
       - "experiments/phase0b.py"
+      - "experiments/p0b01_audit.py"
+      - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
       - ".github/workflows/phase0b_design.yml"
   pull_request:
     paths:
       - "configs/phase0b.json"
+      - "configs/p0b01_audit.json"
       - "docs/phase0b_*.md"
       - "icq_ra/direct_intervention.py"
       - "experiments/phase0b.py"
+      - "experiments/p0b01_audit.py"
+      - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
       - ".github/workflows/phase0b_design.yml"
 
@@ -22,9 +28,9 @@ jobs:
   design-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -53,11 +59,11 @@ jobs:
 
       - name: Debug-only DIRECT_ACTIVE smoke
         run: |
-          python experiments/phase0b.py             --config configs/phase0b.json             --scenario DIRECT_ACTIVE             --seed 6101             --out results/phase0b_debug/direct_active_6101.json
+          python -m experiments.phase0b             --config configs/phase0b.json             --scenario DIRECT_ACTIVE             --seed 6101             --out results/phase0b_debug/direct_active_6101.json
 
       - name: Debug-only HIDDEN_MODIFIER_PROXY smoke
         run: |
-          python experiments/phase0b.py             --config configs/phase0b.json             --scenario HIDDEN_MODIFIER_PROXY             --seed 6102             --out results/phase0b_debug/hidden_proxy_6102.json
+          python -m experiments.phase0b             --config configs/phase0b.json             --scenario HIDDEN_MODIFIER_PROXY             --seed 6102             --out results/phase0b_debug/hidden_proxy_6102.json
 
       - name: Qualification seed firewall check
         run: |
@@ -79,14 +85,14 @@ jobs:
 
       - name: Formal P0B-0 and P0B-1 audit
         run: |
-          python experiments/p0b01_audit.py \
+          python -m experiments.p0b01_audit \
             --phase0b-config configs/phase0b.json \
             --audit-config configs/p0b01_audit.json \
             --out results/phase0b_audit/p0b01_decision.json
 
       - name: Upload design-debug artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: icq-ra-phase0b-p0b01-audit
           path: |

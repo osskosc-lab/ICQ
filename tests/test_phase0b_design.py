@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -108,3 +110,14 @@ def test_icq_di_detects_large_direct_intervention_shift():
         seed=2,
     )
     assert est.value > 0.15
+
+
+def test_p0b01_cli_module_entrypoint_is_importable():
+    completed = subprocess.run(
+        [sys.executable, "-m", "experiments.p0b01_audit", "--help"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "--phase0b-config" in completed.stdout
