@@ -76,10 +76,20 @@ jobs:
           print("PHASE0B_HELDOUT_SEED_FIREWALL: PASS")
           PY
 
+
+      - name: Formal P0B-0 and P0B-1 audit
+        run: |
+          python experiments/p0b01_audit.py \
+            --phase0b-config configs/phase0b.json \
+            --audit-config configs/p0b01_audit.json \
+            --out results/phase0b_audit/p0b01_decision.json
+
       - name: Upload design-debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-phase0b-design-debug
-          path: results/phase0b_debug/
+          name: icq-ra-phase0b-p0b01-audit
+          path: |
+            results/phase0b_debug/
+            results/phase0b_audit/
           if-no-files-found: warn
