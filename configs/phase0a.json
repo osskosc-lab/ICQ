@@ -1,0 +1,33 @@
+{
+  "protocol_id": "ICQ-RA-P0A-v0.1",
+  "protocol_status": "DRAFT_NOT_FROZEN",
+  "research_mode": "pipeline_qualification_only",
+  "seeds": [
+    1101, 1102, 1103, 1104, 1105,
+    1106, 1107, 1108, 1109, 1110,
+    1111, 1112, 1113, 1114, 1115,
+    1116, 1117, 1118, 1119, 1120,
+    1121, 1122, 1123, 1124, 1125,
+    1126, 1127, 1128, 1129, 1130
+  ],
+  "n_per_seed": 12000,
+  "intervention_values": [-1.0, 0.0, 1.0],
+  "history_values": [0, 1],
+  "intervention_main_effect": 0.7,
+  "history_effect": 1.4,
+  "active_latent_coupling": 0.9,
+  "confounded_q_flip_probability": 0.15,
+  "noise_sigma": 1.0,
+  "histogram_min": -5.0,
+  "histogram_max": 5.0,
+  "histogram_bins": 80,
+  "min_cell": 100,
+  "n_permutations": 20,
+  "estimator_seed_offset": 900000,
+  "qualification_thresholds": {
+    "active_ra_mean_min": 0.15,
+    "inactive_ra_mean_max": 0.05,
+    "confounded_ra_mean_max": 0.05,
+    "confounded_obs_mean_min": 0.20
+  }
+}
