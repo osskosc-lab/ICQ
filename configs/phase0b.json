@@ -31,18 +31,25 @@
   },
   "generator_parameters": {
     "n_per_arm": 6000,
-    "intervention_values": [-1.0, 0.0, 1.0],
-    "history_values": [0, 1],
+    "intervention_values": [
+      -1,
+      0,
+      1
+    ],
+    "history_values": [
+      0,
+      1
+    ],
     "intervention_main_effect": 0.7,
     "history_effect": 1.4,
     "direct_q_coupling": 0.9,
     "hidden_modifier_strength": 0.9,
     "q_proxy_flip_probability": 0.05,
-    "noise_sigma": 1.0
+    "noise_sigma": 1
   },
   "estimator_parameters": {
-    "histogram_min": -5.0,
-    "histogram_max": 5.0,
+    "histogram_min": -5,
+    "histogram_max": 5,
     "histogram_bins": 80,
     "min_cell": 100,
     "n_permutations": 20,
@@ -56,21 +63,106 @@
     "hidden_proxy_phase0a_baseline_mean_min": 0.15
   },
   "seed_namespaces": {
-    "debug_only_exposed": [6101, 6102, 6103],
+    "debug_only_exposed": [
+      6101,
+      6102,
+      6103
+    ],
     "p0b2_inactive_direct_heldout": [
-      6201,6202,6203,6204,6205,6206,6207,6208,6209,6210,
-      6211,6212,6213,6214,6215,6216,6217,6218,6219,6220,
-      6221,6222,6223,6224,6225,6226,6227,6228,6229,6230
+      6201,
+      6202,
+      6203,
+      6204,
+      6205,
+      6206,
+      6207,
+      6208,
+      6209,
+      6210,
+      6211,
+      6212,
+      6213,
+      6214,
+      6215,
+      6216,
+      6217,
+      6218,
+      6219,
+      6220,
+      6221,
+      6222,
+      6223,
+      6224,
+      6225,
+      6226,
+      6227,
+      6228,
+      6229,
+      6230
     ],
     "p0b3_direct_active_heldout": [
-      6301,6302,6303,6304,6305,6306,6307,6308,6309,6310,
-      6311,6312,6313,6314,6315,6316,6317,6318,6319,6320,
-      6321,6322,6323,6324,6325,6326,6327,6328,6329,6330
+      6301,
+      6302,
+      6303,
+      6304,
+      6305,
+      6306,
+      6307,
+      6308,
+      6309,
+      6310,
+      6311,
+      6312,
+      6313,
+      6314,
+      6315,
+      6316,
+      6317,
+      6318,
+      6319,
+      6320,
+      6321,
+      6322,
+      6323,
+      6324,
+      6325,
+      6326,
+      6327,
+      6328,
+      6329,
+      6330
     ],
     "p0b4_hidden_proxy_heldout": [
-      6401,6402,6403,6404,6405,6406,6407,6408,6409,6410,
-      6411,6412,6413,6414,6415,6416,6417,6418,6419,6420,
-      6421,6422,6423,6424,6425,6426,6427,6428,6429,6430
+      6401,
+      6402,
+      6403,
+      6404,
+      6405,
+      6406,
+      6407,
+      6408,
+      6409,
+      6410,
+      6411,
+      6412,
+      6413,
+      6414,
+      6415,
+      6416,
+      6417,
+      6418,
+      6419,
+      6420,
+      6421,
+      6422,
+      6423,
+      6424,
+      6425,
+      6426,
+      6427,
+      6428,
+      6429,
+      6430
     ]
   },
   "gate_order": [
@@ -108,5 +200,19 @@
   ],
   "qualification_execution_authorized": false,
   "confirmatory_real_data_run_authorized": false,
-  "l5_phenomenal_claim_authorized": false
+  "l5_phenomenal_claim_authorized": false,
+  "completed_gates": {
+    "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
+    "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS"
+  },
+  "current_gate": "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION",
+  "current_gate_eligible": true,
+  "current_gate_execution_authorized": false,
+  "p0b01_audit_provenance": {
+    "workflow_run": 33971378525,
+    "artifact_name": "icq-ra-phase0b-p0b01-audit",
+    "artifact_id": 9971018941,
+    "artifact_sha256": "8f873bf42718e2947d8319fc3a5782b0c6565f185842f5f22d44002a7a12bb13",
+    "head_sha": "6977d5843e6e3bad65f4be2b7ff5f338ab734037"
+  }
 }
