@@ -1,25 +1,19 @@
 # ICQ-RA Phase 0A — Synthetic Response-Accessibility Qualification
 
 **PROTOCOL_ID:** ICQ-RA-P0A-v0.1  
-**STATUS:** DRAFT_NOT_FROZEN  
-**CURRENT_GATE:** IMPLEMENTATION_AND_PREREGISTRATION_AUDIT  
-**QUALIFICATION_RUN:** NOT_YET_EXECUTED  
-**CONFIRMATORY_RUN:** NOT_AUTHORIZED  
-**QUALIA_APPLICATION:** PROHIBITED_AT_THIS_GATE
+**STATUS:** FROZEN_OPERATIONAL_SCOPE_L1_L3  
+**FINAL_VERDICT:** B — CONDITIONALLY_SUPPORTED  
+**GATE_REVIEW:** FREEZE_APPROVED_WITH_SCOPE_LIMITATION  
+**CONFIRMATORY_REAL_DATA_RUN:** NOT AUTHORIZED  
+**QUALIA_APPLICATION:** NOT AUTHORIZED
 
-## 1. Minimal research question
+## 1. Frozen research question
 
-Can a measurement pipeline distinguish:
+Can the ICQ-RA measurement pipeline reproducibly detect response-accessible latent-state differences under declared synthetic interventions while controlling the tested Null structures?
 
-- a latent state difference that is causally response-accessible,
-- a latent state difference that is response-inactive, and
-- an observationally separated but causally confounded latent state?
-
-No claim about consciousness, phenomenal experience, or qualia is tested in Phase 0A.
+Phase 0A does **not** establish that the measured latent state is the unique causal source of the response difference.
 
 ## 2. Core estimand
-
-For binary latent states q1 and q2:
 
 ```text
 Delta_RA(q1,q2 | u,H)
@@ -32,11 +26,9 @@ ICQ-RA(q1,q2 | H,U,Y)
   = max_{u in U} Delta_RA(q1,q2 | u,H)
 ```
 
-The value is conditional on the declared history representation H, allowed intervention set U, and response variable Y. It is not an intrinsic scalar property of q.
+The value is conditional on the declared history representation H, intervention set U, and response variable Y.
 
 ## 3. Empirical estimator
-
-Finite-sample histogram JSD is positively biased. Therefore each history/intervention cell uses:
 
 ```text
 Delta_hat_corrected
@@ -47,130 +39,112 @@ Delta_hat_corrected
     )
 ```
 
-This correction is an estimator choice only. It does not alter the theoretical estimand.
+The correction is an estimator choice, not part of the theoretical estimand.
 
-## 4. Structural generators
-
-All scenarios share:
+## 4. Completed gate chain
 
 ```text
-Y = a*u + gamma*H + b*q*u + epsilon
-epsilon ~ Normal(0, sigma^2)
+P0A-0  Implementation / debug qualification        PASS
+P0A-1  Seed reproducibility pilot                  PASS
+P0A-2  Null threshold-exceedance calibration       PASS
+P0A-3  ACTIVE held-out sensitivity                 PASS
+P0A-4A Null-family residual audit                  PASS_EQUIVALENT
+P0A-4B Structural identifiability counterexample   FAIL_NONIDENTIFIABLE
+P0A-5  Phase 0A Gate Review / Freeze Decision      FREEZE_APPROVED_WITH_SCOPE_LIMITATION
 ```
 
-### ACTIVE
+## 5. P0A-4A frozen interpretation
+
+The paired Null-family audit found a small positive residual:
 
 ```text
-q independent of H
-b > 0
+mean Delta_N = 0.00507935140306689
+95% CI       = [0.002355609537210807, 0.007803093268922973]
+TOST margin  = +/- 0.01
+TOST         = PASS
 ```
 
-A q-dependent interaction with intervention exists. Expected result: ICQ-RA > 0.
+Therefore the correct conclusion is not "no difference". The CONFOUNDED residual is statistically higher than INACTIVE, but the mean difference is practically equivalent under the preregistered ±0.01 margin.
 
-### INACTIVE
+## 6. P0A-4B non-identifiability result
+
+A hidden-modifier counterexample was constructed:
 
 ```text
-q independent of H
-b = 0
+Z -> Q
+Z x U -> Y
+Q -/-> Y
 ```
 
-q exists in the generator but has no structural path to Y. Expected result: ICQ-RA near 0.
-
-### CONFOUNDED
+with:
 
 ```text
-H -> q
-H -> Y
-q -/-> Y
-b = 0
+mean ICQ-RA = 0.21500508978334615
+frozen ACTIVE criterion = 0.15
 ```
 
-q is a noisy copy of binary H, creating an unconditional observational difference in Y. The ICQ-RA estimator compares q states only within fixed H strata. Expected result:
+Thus:
 
 ```text
-OBS-Distance > 0
-ICQ-RA near 0
+ICQ-RA >= ACTIVE threshold
+does not uniquely imply
+Q -> Y
 ```
 
-## 5. Fixed primary metric and baseline
+Structural identification of Q's unique causal efficacy is therefore rejected under the current intervention/measurement design.
 
-Primary metric:
+## 7. Frozen epistemic levels
 
 ```text
-mean_seed(ICQ-RA)
+L1 Implementation
+  SUPPORTED
+
+L2 Null Control
+  SUPPORTED_WITH_EQUIVALENCE_MARGIN
+
+L3 Response Sensitivity
+  SUPPORTED
+
+L4 Structural Identification
+  REJECTED_NONIDENTIFIABLE
+
+L5 Qualia / Phenomenal Interpretation
+  NOT AUTHORIZED
 ```
 
-Baseline:
+## 8. Frozen claim ceiling
+
+The strongest authorized Phase 0A claim is:
+
+> Under the declared synthetic Phase 0A conditions, ICQ-RA is qualified as a reproducible response-accessibility detector with tested Null-control performance and held-out ACTIVE sensitivity, while unique structural identification of Q's causal efficacy is not supported.
+
+The following claims are prohibited:
 
 ```text
-OBS-Distance = JSD(P(Y|q=0), P(Y|q=1))
+ICQ-RA uniquely identifies Q -> Y
+ICQ-RA identifies consciousness
+ICQ-RA measures qualia
+ICQ-RA = 0 implies absence of qualia
+response difference implies phenomenal difference
 ```
 
-OBS-Distance intentionally ignores H and causal structure.
-
-## 6. Qualification thresholds
-
-The draft configuration currently fixes:
+## 9. Core conclusion
 
 ```text
-ACTIVE mean ICQ-RA      >= 0.15
-INACTIVE mean ICQ-RA    <= 0.05
-CONFOUNDED mean ICQ-RA  <= 0.05
-CONFOUNDED mean OBS     >= 0.20
+Operationally Useful != Structurally Identified
 ```
 
-These are pipeline qualification thresholds, not scientific effect-size claims about real systems.
+## 10. Next action
 
-## 7. One proposition / one metric / one baseline / one falsification
+Phase 0A is closed at the L1-L3 operational scope.
 
-**Proposition**  
-Known response-accessible latent differences can be separated from response-inactive and confounded differences.
-
-**Primary metric**  
-ICQ-RA = maximum history-conditioned corrected JSD across allowed interventions.
-
-**Baseline**  
-Unadjusted OBS-Distance.
-
-**Primary falsification**  
-CONFOUNDED must exhibit observational separation without elevated ICQ-RA.
-
-## 8. Stop conditions
-
-STOP / FAIL if any occurs:
-
-1. INACTIVE exceeds the null threshold.
-2. CONFOUNDED exceeds the null threshold after history conditioning.
-3. ACTIVE fails the sensitivity threshold.
-4. CONFOUNDED fails to produce the required observational separation.
-5. Results depend on an undeclared intervention, history representation, binning rule, or seed change.
-
-## 9. Claim firewall
-
-Phase 0A may support only:
-
-> The ICQ-RA measurement pipeline survived the declared synthetic qualification tests.
-
-Phase 0A must not support:
+Permitted next actions:
 
 ```text
-ICQ-RA > 0 => qualia exist
-ICQ-RA > 0 => qualia were measured
-ICQ-RA = 0 => qualia are absent
-response difference => phenomenal difference
+ARCHIVE_PHASE0A
+PREPARE_LIMITED_SCOPE_MANUSCRIPT
+DESIGN_A_NEW_PROTOCOL_FOR_L4_IDENTIFICATION
+DESIGN_A_SEPARATE_PROTOCOL_FOR_REAL_SYSTEMS
 ```
 
-A future qualia-related phase, if any, requires a separate bridge hypothesis connecting a real measurable latent-state candidate to phenomenal claims, plus independent identifiability and alternative-explanation audits.
-
-## 10. Gate sequence
-
-```text
-P0A-0  Implementation audit
-P0A-1  Seed reproducibility pilot
-P0A-2  Null calibration
-P0A-3  ACTIVE sensitivity qualification
-P0A-4  CONFOUNDED falsification
-P0A-5  Freeze decision
-```
-
-At the current commit, only experimental infrastructure is being proposed. Running the full qualification does not by itself authorize any downstream confirmatory or qualia-related experiment.
+No confirmatory real-data run is authorized by Phase 0A.
