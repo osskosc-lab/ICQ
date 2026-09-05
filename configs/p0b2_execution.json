@@ -1,0 +1,33 @@
+{
+  "protocol_id": "ICQ-RA-P0B-2-v0.1",
+  "parent_protocol_id": "ICQ-RA-P0B-v0.1",
+  "gate": "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION",
+  "execution_status": "AUTHORIZED_ONE_SHOT",
+  "prerequisites": {
+    "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
+    "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS"
+  },
+  "scenario": "INACTIVE_DIRECT",
+  "heldout_seed_bank_id": "P0B2-HO-v1",
+  "heldout_seeds": [
+    6201,6202,6203,6204,6205,6206,6207,6208,6209,6210,
+    6211,6212,6213,6214,6215,6216,6217,6218,6219,6220,
+    6221,6222,6223,6224,6225,6226,6227,6228,6229,6230
+  ],
+  "expected_seed_count": 30,
+  "primary_metric": "mean_seed(ICQ-DI)",
+  "frozen_threshold": {
+    "operator": "<=",
+    "value": 0.05,
+    "source": "PHASE0A_INHERITED_NO_P0B_TUNING"
+  },
+  "decision_rule": {
+    "PASS": "mean_seed(ICQ-DI) <= 0.05",
+    "FAIL_NULL_CONTROL": "mean_seed(ICQ-DI) > 0.05"
+  },
+  "no_tuning_after_execution": true,
+  "later_gates_authorized": false,
+  "confirmatory_real_data_run_authorized": false,
+  "l4_upgrade_authorized": false,
+  "qualia_claim_authorized": false
+}
