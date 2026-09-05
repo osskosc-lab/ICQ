@@ -56,3 +56,35 @@ jobs:
         run: |
           echo "P0A-1 through P0A-5 are frozen historical qualification evidence."
           echo "Routine CI does not rerun scientific qualification seed banks."
+
+      - name: Frozen environment provenance audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          expected = {
+              "numpy==2.5.2",
+              "scipy==1.18.1",
+              "pytest==8.4.2",
+              "iniconfig==2.3.0",
+              "packaging==26.3",
+              "pluggy==1.6.0",
+              "pygments==2.21.0",
+          }
+
+          lines = {
+              line.strip()
+              for line in Path("requirements-phase0a-frozen.txt").read_text().splitlines()
+              if line.strip() and not line.lstrip().startswith("#")
+          }
+          assert lines == expected
+
+          provenance = Path("docs/phase0a_environment_provenance.md").read_text()
+          assert "86d8b801f9a1e32a3ffefcf0c404315cd3e1701c" in provenance
+          assert "33964641438" in provenance
+          assert "Python 3.12.14" in provenance
+          assert "ARCHIVAL_REPRODUCIBILITY_HARDENED" in provenance
+          assert "NOT_FULL_BITWISE_ENVIRONMENT_LOCK" in provenance
+
+          print("FROZEN_ENVIRONMENT_PROVENANCE_AUDIT: PASS")
+          PY
