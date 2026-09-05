@@ -1,0 +1,32 @@
+{
+  "protocol_id": "ICQ-RA-P0A-5-v0.1",
+  "gate": "P0A-5_PHASE0A_GATE_REVIEW_AND_FREEZE_DECISION",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "inputs": {
+    "p0a1": "results/p0a1/decision.json",
+    "p0a2": "results/p0a2/decision_semantic_v011.json",
+    "p0a3": "results/p0a3/decision.json",
+    "p0a4a": "results/p0a4a/decision.json",
+    "p0a4b": "results/p0a4b/decision.json"
+  },
+  "required_results": {
+    "p0a1": "PASS",
+    "p0a2": "PASS",
+    "p0a3": "PASS",
+    "p0a4a": "PASS_EQUIVALENT",
+    "p0a4b": "FAIL_NONIDENTIFIABLE"
+  },
+  "freeze_policy": {
+    "L1_IMPLEMENTATION": "SUPPORTED",
+    "L2_NULL_CONTROL": "SUPPORTED_WITH_EQUIVALENCE_MARGIN",
+    "L3_RESPONSE_SENSITIVITY": "SUPPORTED",
+    "L4_STRUCTURAL_IDENTIFICATION": "REJECTED_NONIDENTIFIABLE",
+    "L5_QUALIA_OR_PHENOMENAL": "NOT_AUTHORIZED"
+  },
+  "final_verdict_if_required_results_match": "B_CONDITIONALLY_SUPPORTED",
+  "phase0a_status_if_required_results_match": "FROZEN_OPERATIONAL_SCOPE_L1_L3",
+  "confirmatory_real_data_run_authorized": false,
+  "qualia_claim_authorized": false,
+  "l4_upgrade_authorized": false,
+  "next_action": "ARCHIVE_PHASE0A_AND_PREPARE_LIMITED_SCOPE_MANUSCRIPT_OR_NEW_PROTOCOL"
+}
