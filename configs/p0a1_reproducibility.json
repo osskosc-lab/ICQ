@@ -1,0 +1,23 @@
+{
+  "protocol_id": "ICQ-RA-P0A-1-v0.1",
+  "gate": "P0A-1_SEED_REPRODUCIBILITY_PILOT",
+  "status": "EXECUTION_AUTHORIZED",
+  "source_config": "configs/phase0a.json",
+  "scenarios": ["ACTIVE", "INACTIVE", "CONFOUNDED"],
+  "seeds": [1101, 1115, 1130],
+  "replicates": 2,
+  "second_pass_order": "REVERSED",
+  "comparison": {
+    "dataset_sha256_exact": true,
+    "config_sha256_exact": true,
+    "icq_ra_exact": true,
+    "obs_distance_exact": true,
+    "per_intervention_exact": true,
+    "valid_cells_exact": true,
+    "debug_pass_required": true
+  },
+  "pass_rule": "ALL_9_CASES_EXACT_MATCH_AND_DEBUG_PASS",
+  "claim_ceiling": "DETERMINISTIC_SEED_REPRODUCIBILITY_ONLY",
+  "phase0a_qualification_authorized": false,
+  "qualia_claim_authorized": false
+}

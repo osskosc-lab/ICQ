@@ -1,0 +1,24 @@
+{
+  "protocol_id":"ICQ-RA-P0A-4B-v0.1",
+  "gate":"P0A-4B_STRUCTURAL_IDENTIFIABILITY_COUNTEREXAMPLE",
+  "status":"FROZEN_BEFORE_EXECUTION",
+  "source_config":"configs/phase0a.json",
+  "seed_bank_id":"P0A4B-HO-v1",
+  "seeds":[4101,4102,4103,4104,4105,4106,4107,4108,4109,4110,4111,4112,4113,4114,4115,4116,4117,4118,4119,4120,4121,4122,4123,4124,4125,4126,4127,4128,4129,4130],
+  "forbidden_previously_observed_seed_ranges":["1101-1130","2101-2130","3101-3160"],
+  "expected_runs_per_alternative":30,
+  "active_criterion_mean_icq_ra_min":0.15,
+  "alternative_classes":{
+    "OBSERVED_HU_INTERACTION":{"dag":"H -> Y; HxU -> Y; Q independent; Q -/-> Y","interaction_strength":0.9,"purpose":"Observed-context interaction control"},
+    "HIDDEN_MODIFIER_PROXY":{"dag":"Z -> Q; ZxU -> Y; Q -/-> Y","hidden_modifier_strength":0.9,"q_proxy_flip_probability":0.05,"purpose":"Direct non-identifiability counterexample candidate"}
+  },
+  "decision_rule":{
+    "FAIL_NONIDENTIFIABLE":"Any Q-no-direct-effect alternative reaches mean ICQ-RA >= 0.15",
+    "SURVIVED_DECLARED_ALTERNATIVES":"All declared alternatives remain below 0.15 with valid execution",
+    "INCONCLUSIVE":"Execution/invariant/capacity comparison is invalid"
+  },
+  "claim_ceiling_if_survived":"IDENTIFIABLE_ONLY_RELATIVE_TO_DECLARED_ALTERNATIVE_CLASSES",
+  "claim_if_failed":"ICQ_RA_IS_RESPONSE_ACCESSIBILITY_DETECTOR_NOT_A_UNIQUE_IDENTIFIER_OF_Q_CAUSAL_EFFICACY",
+  "phase0a_overall_qualification_authorized":false,
+  "qualia_claim_authorized":false
+}
