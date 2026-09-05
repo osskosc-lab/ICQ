@@ -66,10 +66,17 @@ jobs:
             --b results/p0a1/pass_b.json \
             --out results/p0a1/decision.json
 
-      - name: Upload debug and P0A-1 artifacts
+      - name: P0A-2 Null Calibration
+        run: |
+          python experiments/p0a2_null_calibration.py \
+            --phase0a-config configs/phase0a.json \
+            --calibration-config configs/p0a2_null_calibration.json \
+            --out results/p0a2/decision.json
+
+      - name: Upload debug and gate artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: icq-ra-debug-p0a1
+          name: icq-ra-debug-p0a1-p0a2
           path: results/
           if-no-files-found: warn
