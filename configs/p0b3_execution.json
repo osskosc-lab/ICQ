@@ -2,11 +2,11 @@
   "protocol_id": "ICQ-RA-P0B-3-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-3-v0.1",
   "gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
-  "implementation_status": "IMPLEMENTED_AWAITING_AUTHORIZATION",
-  "execution_authorized": false,
-  "authorization_status": "NOT_AUTHORIZED",
+  "implementation_status": "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT",
+  "execution_authorized": true,
+  "authorization_status": "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT",
   "design_freeze_head_sha": "93696cdbfb00c20e8adc4254f7866c999ef802af",
-  "authorized_parent_head_sha": null,
+  "authorized_parent_head_sha": "9b7ed6eb43e2af3d5f7c325cb2e903ef347857fc",
   "scenario": "DIRECT_ACTIVE",
   "heldout_seed_bank_id": "P0B3-HO-v1",
   "heldout_seeds": [
@@ -80,5 +80,11 @@
     "confirmatory_real_data_run_authorized": false,
     "general_l4_upgrade_authorized": false,
     "qualia_or_phenomenal_claim_authorized": false
+  },
+  "authorization_evidence": {
+    "source": "EXPLICIT_USER_INSTRUCTION_IN_CHAT",
+    "instruction": "次段階実験開始",
+    "scope": "P0B-3_DIRECT_ACTIVE_SENSITIVITY_ONLY",
+    "p0b4_authorized": false
   }
 }
