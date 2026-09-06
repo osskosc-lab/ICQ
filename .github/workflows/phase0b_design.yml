@@ -1,0 +1,113 @@
+name: ICQ-RA Phase 0B Design Audit
+
+on:
+  push:
+    paths:
+      - "configs/phase0b.json"
+      - "configs/p0b01_audit.json"
+      - "configs/p0b3_design.json"
+      - "configs/p0b3_execution.json"
+      - "docs/phase0b_*.md"
+      - "docs/p0b3_design.md"
+      - "icq_ra/direct_intervention.py"
+      - "experiments/phase0b.py"
+      - "experiments/p0b01_audit.py"
+      - "experiments/p0b3_qualify.py"
+      - "experiments/__init__.py"
+      - "tests/test_phase0b_design.py"
+      - "tests/test_p0b3_design.py"
+      - "tests/test_p0b3_execution_contract.py"
+      - ".github/workflows/phase0b_design.yml"
+  pull_request:
+    paths:
+      - "configs/phase0b.json"
+      - "configs/p0b01_audit.json"
+      - "configs/p0b3_design.json"
+      - "configs/p0b3_execution.json"
+      - "docs/phase0b_*.md"
+      - "docs/p0b3_design.md"
+      - "icq_ra/direct_intervention.py"
+      - "experiments/phase0b.py"
+      - "experiments/p0b01_audit.py"
+      - "experiments/p0b3_qualify.py"
+      - "experiments/__init__.py"
+      - "tests/test_phase0b_design.py"
+      - "tests/test_p0b3_design.py"
+      - "tests/test_p0b3_execution_contract.py"
+      - ".github/workflows/phase0b_design.yml"
+
+jobs:
+  design-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -e .
+
+      - name: Phase 0B design tests
+        run: |
+          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py tests/test_p0b3_execution_contract.py
+
+      - name: Phase 0B authorization firewall
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("configs/phase0b.json").read_text())
+          assert cfg["protocol_status"] == "DRAFT_FOR_PREREGISTRATION_AUDIT"
+          assert cfg["qualification_execution_authorized"] is False
+          assert cfg["confirmatory_real_data_run_authorized"] is False
+          assert cfg["l5_phenomenal_claim_authorized"] is False
+          print("PHASE0B_AUTHORIZATION_FIREWALL: PASS")
+          PY
+
+      - name: Debug-only DIRECT_ACTIVE smoke
+        run: |
+          python -m experiments.phase0b             --config configs/phase0b.json             --scenario DIRECT_ACTIVE             --seed 6101             --out results/phase0b_debug/direct_active_6101.json
+
+      - name: Debug-only HIDDEN_MODIFIER_PROXY smoke
+        run: |
+          python -m experiments.phase0b             --config configs/phase0b.json             --scenario HIDDEN_MODIFIER_PROXY             --seed 6102             --out results/phase0b_debug/hidden_proxy_6102.json
+
+      - name: Qualification seed firewall check
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          cfg = json.loads(Path("configs/phase0b.json").read_text())
+          debug = set(cfg["seed_namespaces"]["debug_only_exposed"])
+          heldout = (
+              set(cfg["seed_namespaces"]["p0b2_inactive_direct_heldout"])
+              | set(cfg["seed_namespaces"]["p0b3_direct_active_heldout"])
+              | set(cfg["seed_namespaces"]["p0b4_hidden_proxy_heldout"])
+          )
+          assert not (debug & heldout)
+          print("PHASE0B_HELDOUT_SEED_FIREWALL: PASS")
+          PY
+
+
+      - name: Formal P0B-0 and P0B-1 audit
+        run: |
+          python -m experiments.p0b01_audit \
+            --phase0b-config configs/phase0b.json \
+            --audit-config configs/p0b01_audit.json \
+            --out results/phase0b_audit/p0b01_decision.json
+
+      - name: Upload design-debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: icq-ra-phase0b-p0b01-audit
+          path: |
+            results/phase0b_debug/
+            results/phase0b_audit/
+          if-no-files-found: warn

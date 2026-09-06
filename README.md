@@ -276,6 +276,69 @@ This is a valid scientific endpoint, not an implementation failure.
 
 ---
 
+### P0B-2 — held-out INACTIVE_DIRECT Null qualification
+
+Frozen held-out bank:
+
+```text
+P0B2-HO-v1
+6201-6230
+n = 30
+```
+
+Frozen rule:
+
+```text
+mean_seed(ICQ-DI) <= 0.05
+```
+
+Observed:
+
+```text
+mean    0.012255957465935682
+std     0.0074248519394979375
+median  0.012447017307577569
+q05     0.0017940479527481055
+q95     0.02303821588814153
+min     0.001435220334024419
+max     0.027490121009634563
+```
+
+Decision:
+
+```text
+PASS
+```
+
+The execution was one-shot. The dedicated workflow was removed after result capture, so the held-out P0B-2 bank is not part of routine CI.
+
+Evidence:
+
+```text
+run: 33973310871
+artifact: icq-ra-p0b2-one-shot
+artifact ID: 9971565732
+SHA-256:
+81ae84ba7a8aa46b35c9f1dc4740a9ebf62cfa886b306c4a442d743030d63ec8
+```
+
+See [P0B-2 result](docs/p0b2_result.md).
+
+---
+
+## P0B-3 held-out DIRECT_ACTIVE result
+
+```text
+mean ICQ-DI = 0.2524101694466042
+threshold   = 0.15
+decision    = PASS
+run         = 34065143572
+artifact    = 9998695614
+```
+
+This supports DIRECT_ACTIVE synthetic sensitivity only. P0B-4 remains separate and not authorized.
+
+
 ## Claim firewall
 
 The following claims are prohibited:
@@ -336,7 +399,7 @@ Current post-freeze debug state:
 
 ```text
 Unit tests                         PASS
-7 tests passed
+9 tests passed
 Frozen metadata audit             PASS
 Qualification rerun firewall      PASS
 Archive-branch CI                 PASS
@@ -473,6 +536,110 @@ QUALIA_CLAIM
 
 ---
 
+## Phase 0B — L4 identification protocol (DRAFT)
+
+Phase 0B is a separate protocol created after the frozen Phase 0A non-identifiability result.
+
+```text
+PROTOCOL_ID:
+ICQ-RA-P0B-v0.1
+
+STATUS:
+DRAFT_FOR_PREREGISTRATION_AUDIT
+
+COMPLETED GATES:
+P0B-0 PASS
+P0B-1 PASS
+P0B-2 PASS
+P0B-3 PASS
+
+CURRENT GATE:
+P0B-4 HIDDEN_MODIFIER_PROXY FALSIFICATION
+
+ELIGIBLE:
+YES
+
+EXECUTION:
+NOT AUTHORIZED
+
+QUALIFICATION EXECUTION:
+NOT AUTHORIZED
+```
+
+The Phase 0B question is narrower than general structural identification:
+
+> If synthetic Q itself can be atomically intervened on, can a direct-intervention response metric distinguish direct Q causal efficacy from the hidden-modifier proxy that defeated Phase 0A?
+
+Primary metric:
+
+```text
+ICQ-DI(Q->Y | H,U)
+=
+max_u weighted_mean_h
+JSD[
+  P(Y | do(Q=0), do(U=u), H=h),
+  P(Y | do(Q=1), do(U=u), H=h)
+]
+```
+
+Primary baseline:
+
+```text
+Phase 0A conditioning-based ICQ-RA
+P(Y | do(U), Q, H)
+```
+
+Primary falsification:
+
+```text
+Z -> Q
+Z x U -> Y
+Q -/-> Y
+```
+
+Required Phase 0B pattern:
+
+```text
+Hidden-proxy Phase 0A baseline:
+mean ICQ-RA >= 0.15
+
+Hidden-proxy direct intervention:
+mean ICQ-DI <= 0.05
+```
+
+Frozen untouched qualification seed banks:
+
+```text
+P0B-2 INACTIVE_DIRECT       6201-6230
+P0B-3 DIRECT_ACTIVE         6301-6330
+P0B-4 HIDDEN_MODIFIER      6401-6430
+```
+
+Routine CI may use only:
+
+```text
+6101-6103
+DEBUG_ONLY_NO_SCIENTIFIC_INFERENCE
+```
+
+Even a complete Phase 0B PASS could support at most:
+
+```text
+L4_CONDITIONALLY_SUPPORTED_FOR_DIRECTLY_INTERVENABLE_SYNTHETIC_Q_ONLY
+```
+
+It would not authorize real-system identification, consciousness claims, or qualia claims.
+
+See:
+
+- [Phase 0B protocol](docs/phase0b_protocol.md)
+- [Phase 0B design rationale](docs/phase0b_design_rationale.md)
+- [P0B-0 / P0B-1 audit result](docs/p0b01_audit_result.md)
+- [P0B-3 frozen experimental design](docs/p0b3_design.md)
+- [P0B-3 result](docs/p0b3_result.md)
+
+---
+
 ## Documentation
 
 - [Phase 0A frozen protocol](docs/phase0a_protocol.md)
@@ -483,3 +650,5 @@ QUALIA_CLAIM
 - [P0A-4 orthogonal gate design](docs/p0a4_design.md)
 - [P0A-5 Gate Review](docs/p0a5_gate_review.md)
 - [Phase 0A frozen release record](docs/releases/phase0a-v0.1-frozen.md)
+
+P0B-3 one-shot workflow removed after valid result at commit `0c9a48a9162572d8a69058cea9f5dd14af4c7685`; rerun authorization is closed.
