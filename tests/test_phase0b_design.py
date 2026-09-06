@@ -128,6 +128,6 @@ def test_p0b01_progress_metadata_tracks_current_gate():
     cfg = load_cfg()
     checks, expected_current_gate = protocol_progress_checks(cfg)
     assert all(checks.values())
-    assert expected_current_gate == "P0B-3_DIRECT_ACTIVE_SENSITIVITY"
+    assert expected_current_gate == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"
     assert cfg["current_gate"] == expected_current_gate
     assert cfg["current_gate_execution_authorized"] is False

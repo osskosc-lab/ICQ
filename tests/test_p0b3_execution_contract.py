@@ -11,7 +11,7 @@ def load(path):
 
 def test_p0b3_execution_is_closed_after_valid_one_shot_result():
     e = load("configs/p0b3_execution.json")
-    assert e["implementation_status"] == "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING"
+    assert e["implementation_status"] == "COMPLETE_CLOSED_AFTER_VALID_RESULT"
     assert e["execution_authorized"] is False
     assert e["authorization_status"] == "COMPLETE_CLOSED_FOR_RERUN"
     assert e["authorized_parent_head_sha"] == "9b7ed6eb43e2af3d5f7c325cb2e903ef347857fc"
@@ -19,6 +19,9 @@ def test_p0b3_execution_is_closed_after_valid_one_shot_result():
     assert e["authorization_evidence"]["scope"] == "P0B-3_DIRECT_ACTIVE_SENSITIVITY_ONLY"
     assert e["authorization_evidence"]["p0b4_authorized"] is False
     assert e["result"]["decision"] == "PASS"
+    assert e["one_shot_workflow_close_pending"] is False
+    assert e["one_shot_workflow_closed"] is True
+    assert not (ROOT / ".github/workflows/p0b3_execute.yml").exists()
 
 
 def test_p0b3_execution_contract_matches_frozen_design():
