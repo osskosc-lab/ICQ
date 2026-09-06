@@ -2,7 +2,7 @@
   "protocol_id": "ICQ-RA-P0B-3-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-3-v0.1",
   "gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
-  "implementation_status": "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING",
+  "implementation_status": "COMPLETE_CLOSED_AFTER_VALID_RESULT",
   "execution_authorized": false,
   "authorization_status": "COMPLETE_CLOSED_FOR_RERUN",
   "design_freeze_head_sha": "93696cdbfb00c20e8adc4254f7866c999ef802af",
@@ -96,6 +96,7 @@
     "artifact_sha256": "dea9cc9bef79faacdd079e8541ad066b27ac9d563ea04d5822508a9f5eb09fe4",
     "execution_head_sha": "64a93ddc36dfe2a59b3b97bd35701ed50ecaccde"
   },
-  "one_shot_workflow_close_pending": true,
-  "one_shot_workflow_closed": false
+  "one_shot_workflow_close_pending": false,
+  "one_shot_workflow_closed": true,
+  "workflow_removal_commit_sha": "0c9a48a9162572d8a69058cea9f5dd14af4c7685"
 }

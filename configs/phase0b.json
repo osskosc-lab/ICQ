@@ -257,6 +257,7 @@
     "artifact_id": 9998695614,
     "artifact_sha256": "dea9cc9bef79faacdd079e8541ad066b27ac9d563ea04d5822508a9f5eb09fe4",
     "execution_head_sha": "64a93ddc36dfe2a59b3b97bd35701ed50ecaccde",
-    "one_shot_workflow_closed": false
+    "one_shot_workflow_closed": true,
+    "workflow_removal_commit_sha": "0c9a48a9162572d8a69058cea9f5dd14af4c7685"
   }
 }

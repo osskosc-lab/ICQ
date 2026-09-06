@@ -68,3 +68,11 @@ P0B-4 HIDDEN_MODIFIER_PROXY FALSIFICATION
 ELIGIBLE
 NOT AUTHORIZED
 ```
+
+## One-shot workflow closure
+
+```text
+workflow removed after valid result: true
+removal commit: 0c9a48a9162572d8a69058cea9f5dd14af4c7685
+rerun authorization: CLOSED
+```

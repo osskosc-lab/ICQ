@@ -610,3 +610,5 @@ See:
 - [P0A-4 orthogonal gate design](docs/p0a4_design.md)
 - [P0A-5 Gate Review](docs/p0a5_gate_review.md)
 - [Phase 0A frozen release record](docs/releases/phase0a-v0.1-frozen.md)
+
+P0B-3 one-shot workflow removed after valid result at commit `0c9a48a9162572d8a69058cea9f5dd14af4c7685`; rerun authorization is closed.
