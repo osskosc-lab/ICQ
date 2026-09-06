@@ -1,0 +1,167 @@
+{
+  "protocol_id": "ICQ-RA-P0B-3-v0.1",
+  "parent_protocol_id": "ICQ-RA-P0B-v0.1",
+  "gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
+  "design_status": "FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION",
+  "research_mode": "falsification_first",
+  "purpose": "Test whether the frozen ICQ-DI implementation detects the declared DIRECT_ACTIVE synthetic generator on the untouched P0B-3 held-out seed bank.",
+  "prerequisites": {
+    "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
+    "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS",
+    "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION": "PASS"
+  },
+  "scenario": "DIRECT_ACTIVE",
+  "heldout_seed_bank_id": "P0B3-HO-v1",
+  "heldout_seeds": [
+    6301,
+    6302,
+    6303,
+    6304,
+    6305,
+    6306,
+    6307,
+    6308,
+    6309,
+    6310,
+    6311,
+    6312,
+    6313,
+    6314,
+    6315,
+    6316,
+    6317,
+    6318,
+    6319,
+    6320,
+    6321,
+    6322,
+    6323,
+    6324,
+    6325,
+    6326,
+    6327,
+    6328,
+    6329,
+    6330
+  ],
+  "seed_execution_order": "ASCENDING_EXACT_6301_TO_6330",
+  "expected_seed_count": 30,
+  "primary_metric": {
+    "name": "mean_seed(ICQ-DI)",
+    "per_seed_estimator": "experiments.phase0b.estimate_direct_seed('DIRECT_ACTIVE', seed, phase0b_config)",
+    "aggregation": "arithmetic mean over exactly 30 held-out per-seed ICQ-DI values",
+    "only_gate_decision_metric": true
+  },
+  "frozen_threshold": {
+    "operator": ">=",
+    "value": 0.15,
+    "source": "configs/phase0b.json:frozen_thresholds.direct_active_mean_min",
+    "inheritance": "PHASE0A_INHERITED_NO_P0B_TUNING"
+  },
+  "decision_rule": {
+    "PASS": "all preflight/integrity checks PASS AND mean_seed(ICQ-DI) >= 0.15",
+    "FAIL_SENSITIVITY": "all preflight/integrity checks PASS AND mean_seed(ICQ-DI) < 0.15",
+    "STOP_INTEGRITY_NO_SCIENTIFIC_DECISION": "any preflight, seed-bank, source-freeze, estimator, or result-completeness check fails"
+  },
+  "descriptive_outputs": {
+    "decision_use": "NONE_EXCEPT_MEAN",
+    "statistics": [
+      "n",
+      "mean",
+      "sample_std_ddof_1",
+      "median",
+      "q05_numpy_linear",
+      "q95_numpy_linear",
+      "min",
+      "max"
+    ]
+  },
+  "preflight_checks": [
+    "parent protocol id exact",
+    "current gate is P0B-3_DIRECT_ACTIVE_SENSITIVITY",
+    "P0B-0/P0B-1/P0B-2 recorded PASS",
+    "execution authorization explicitly true only in a future authorization commit",
+    "held-out seed bank equals exact ascending integers 6301-6330",
+    "held-out seeds are unique and count is exactly 30",
+    "P0B-3 seeds are disjoint from debug, P0B-2, P0B-4, and Phase 0A used seed namespaces",
+    "scenario is exactly DIRECT_ACTIVE",
+    "primary threshold equals frozen 0.15 with >= operator",
+    "scientific source Git blob SHAs match frozen source_snapshot",
+    "no result field exists before execution"
+  ],
+  "scientific_source_snapshot": {
+    "configs/phase0b.json": "fca2c0397fe3b01a84f728e92e4d95cac8289628",
+    "experiments/phase0b.py": "2ae52c8a30a3bcb8137ccf0fa6f512f1064512fc",
+    "icq_ra/direct_intervention.py": "17f1fa3f224b975b5d3754aac43ffe93ed578f79",
+    "requirements.txt": "0da304d5ea05d410163d39c72fcabb67573f3a88",
+    "pyproject.toml": "55ac1e2b774cfb8b6a3c16e50c92d900bda05173"
+  },
+  "execution_contract": {
+    "execution_authorized": false,
+    "one_shot_only": true,
+    "routine_ci_must_not_execute_heldout_seeds": true,
+    "qualification_runner_present_at_design_freeze": false,
+    "one_shot_workflow_present_at_design_freeze": false,
+    "authorization_requirement": "EXPLICIT_USER_AUTHORIZATION_IN_A_LATER_TURN",
+    "post_execution_workflow_policy": "REMOVE_ONE_SHOT_WORKFLOW_IMMEDIATELY_AFTER_RESULT_CAPTURE",
+    "seed_replacement_allowed": false,
+    "rerun_after_valid_result_allowed": false,
+    "post_result_threshold_change_allowed": false,
+    "post_result_generator_change_allowed": false,
+    "post_result_estimator_change_allowed": false
+  },
+  "result_schema_after_authorized_execution": {
+    "required_fields": [
+      "protocol_id",
+      "heldout_seed_bank_id",
+      "execution_head_sha",
+      "n",
+      "per_seed_icq_di",
+      "mean",
+      "sample_std_ddof_1",
+      "median",
+      "q05",
+      "q95",
+      "min",
+      "max",
+      "threshold_min",
+      "decision",
+      "artifact_name",
+      "artifact_id",
+      "artifact_sha256",
+      "workflow_run"
+    ],
+    "result_field_present_now": false
+  },
+  "stop_conditions": [
+    "SOURCE_SNAPSHOT_MISMATCH",
+    "HELDOUT_SEED_OVERLAP_OR_PRIOR_P0B3_EXECUTION",
+    "SEED_COUNT_OR_ORDER_MISMATCH",
+    "SCENARIO_MISMATCH",
+    "THRESHOLD_MISMATCH",
+    "CURRENT_GATE_MISMATCH",
+    "MISSING_PREREQUISITE_PASS",
+    "INCOMPLETE_OR_DUPLICATE_SEED_RESULT",
+    "POST_RESULT_THRESHOLD_GENERATOR_OR_ESTIMATOR_CHANGE"
+  ],
+  "next_state_if_pass": {
+    "completed_gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY=PASS",
+    "next_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+    "next_gate_eligible": true,
+    "next_gate_execution_authorized": false
+  },
+  "next_state_if_fail": {
+    "completed_gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY=FAIL_SENSITIVITY",
+    "phase0b_stop": true,
+    "p0b4_execution_authorized": false,
+    "l4_upgrade_authorized": false
+  },
+  "claim_firewall": {
+    "p0b3_pass_claim_ceiling": "DIRECT_ACTIVE_SYNTHETIC_SENSITIVITY_ONLY",
+    "general_l4_structural_identification_authorized": false,
+    "real_system_identification_authorized": false,
+    "confirmatory_real_data_run_authorized": false,
+    "consciousness_claim_authorized": false,
+    "qualia_or_phenomenal_claim_authorized": false
+  }
+}

@@ -501,7 +501,15 @@ P0B-2 PASS
 
 CURRENT GATE:
 P0B-3 DIRECT_ACTIVE SENSITIVITY
-ELIGIBLE / NOT AUTHORIZED
+
+DESIGN:
+FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION
+
+ELIGIBLE:
+YES
+
+EXECUTION:
+NOT AUTHORIZED
 
 QUALIFICATION EXECUTION:
 NOT AUTHORIZED
@@ -576,6 +584,7 @@ See:
 - [Phase 0B protocol](docs/phase0b_protocol.md)
 - [Phase 0B design rationale](docs/phase0b_design_rationale.md)
 - [P0B-0 / P0B-1 audit result](docs/p0b01_audit_result.md)
+- [P0B-3 frozen experimental design](docs/p0b3_design.md)
 
 ---
 

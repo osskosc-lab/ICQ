@@ -5,23 +5,29 @@ on:
     paths:
       - "configs/phase0b.json"
       - "configs/p0b01_audit.json"
+      - "configs/p0b3_design.json"
       - "docs/phase0b_*.md"
+      - "docs/p0b3_design.md"
       - "icq_ra/direct_intervention.py"
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
+      - "tests/test_p0b3_design.py"
       - ".github/workflows/phase0b_design.yml"
   pull_request:
     paths:
       - "configs/phase0b.json"
       - "configs/p0b01_audit.json"
+      - "configs/p0b3_design.json"
       - "docs/phase0b_*.md"
+      - "docs/p0b3_design.md"
       - "icq_ra/direct_intervention.py"
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
+      - "tests/test_p0b3_design.py"
       - ".github/workflows/phase0b_design.yml"
 
 jobs:
@@ -41,7 +47,7 @@ jobs:
 
       - name: Phase 0B design tests
         run: |
-          pytest -q tests/test_phase0b_design.py
+          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py
 
       - name: Phase 0B authorization firewall
         run: |
