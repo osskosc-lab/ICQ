@@ -326,6 +326,19 @@ See [P0B-2 result](docs/p0b2_result.md).
 
 ---
 
+## P0B-3 held-out DIRECT_ACTIVE result
+
+```text
+mean ICQ-DI = 0.2524101694466042
+threshold   = 0.15
+decision    = PASS
+run         = 34065143572
+artifact    = 9998695614
+```
+
+This supports DIRECT_ACTIVE synthetic sensitivity only. P0B-4 remains separate and not authorized.
+
+
 ## Claim firewall
 
 The following claims are prohibited:
@@ -498,12 +511,10 @@ COMPLETED GATES:
 P0B-0 PASS
 P0B-1 PASS
 P0B-2 PASS
+P0B-3 PASS
 
 CURRENT GATE:
-P0B-3 DIRECT_ACTIVE SENSITIVITY
-
-DESIGN:
-FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION
+P0B-4 HIDDEN_MODIFIER_PROXY FALSIFICATION
 
 ELIGIBLE:
 YES
@@ -585,6 +596,7 @@ See:
 - [Phase 0B design rationale](docs/phase0b_design_rationale.md)
 - [P0B-0 / P0B-1 audit result](docs/p0b01_audit_result.md)
 - [P0B-3 frozen experimental design](docs/p0b3_design.md)
+- [P0B-3 result](docs/p0b3_result.md)
 
 ---
 

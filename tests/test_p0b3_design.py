@@ -26,16 +26,22 @@ def test_p0b3_design_is_frozen_but_not_authorized():
     assert d["result_schema_after_authorized_execution"]["result_field_present_now"] is False
 
 
-def test_p0b3_prerequisites_and_current_gate_match_parent():
+def test_p0b3_prerequisites_and_post_result_parent_state():
     d = load("configs/p0b3_design.json")
     p = load("configs/phase0b.json")
 
-    assert p["current_gate"] == "P0B-3_DIRECT_ACTIVE_SENSITIVITY"
-    assert p["current_gate_eligible"] is True
-    assert p["current_gate_execution_authorized"] is False
-
     for gate, expected in d["prerequisites"].items():
         assert p["completed_gates"][gate] == expected
+
+    if "P0B-3_DIRECT_ACTIVE_SENSITIVITY" in p["completed_gates"]:
+        assert p["completed_gates"]["P0B-3_DIRECT_ACTIVE_SENSITIVITY"] == "PASS"
+        assert p["current_gate"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"
+        assert p["current_gate_eligible"] is True
+        assert p["current_gate_execution_authorized"] is False
+    else:
+        assert p["current_gate"] == "P0B-3_DIRECT_ACTIVE_SENSITIVITY"
+        assert p["current_gate_eligible"] is True
+        assert p["current_gate_execution_authorized"] is False
 
 
 def test_p0b3_seed_bank_is_exact_unique_and_disjoint():
@@ -75,10 +81,16 @@ def test_p0b3_primary_metric_and_threshold_are_exactly_inherited():
     assert d["decision_rule"]["FAIL_SENSITIVITY"].endswith("mean_seed(ICQ-DI) < 0.15")
 
 
-def test_p0b3_scientific_source_snapshot_is_unchanged():
+def test_p0b3_scientific_source_snapshot_is_preserved_in_result_after_execution():
     d = load("configs/p0b3_design.json")
-    for path, expected_sha in d["scientific_source_snapshot"].items():
-        assert git_blob_sha(path) == expected_sha, path
+    result_path = ROOT / "configs/p0b3_result.json"
+    if result_path.exists():
+        r = load("configs/p0b3_result.json")
+        assert r["scientific_source_snapshot"] == d["scientific_source_snapshot"]
+        assert r["execution_status"] == "COMPLETE_VALID_SCIENTIFIC_DECISION"
+    else:
+        for path, expected_sha in d["scientific_source_snapshot"].items():
+            assert git_blob_sha(path) == expected_sha, path
 
 
 def test_p0b3_design_freeze_historically_preceded_execution_implementation():

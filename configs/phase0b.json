@@ -204,9 +204,10 @@
   "completed_gates": {
     "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
     "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS",
-    "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION": "PASS"
+    "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION": "PASS",
+    "P0B-3_DIRECT_ACTIVE_SENSITIVITY": "PASS"
   },
-  "current_gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
+  "current_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
   "current_gate_eligible": true,
   "current_gate_execution_authorized": false,
   "p0b01_audit_provenance": {
@@ -236,5 +237,26 @@
     "artifact_sha256": "81ae84ba7a8aa46b35c9f1dc4740a9ebf62cfa886b306c4a442d743030d63ec8",
     "execution_head_sha": "018fb520dfef82490f32ec4b95bec136c112174d",
     "one_shot_workflow_closed": true
+  },
+  "p0b3_result": {
+    "protocol_id": "ICQ-RA-P0B-3-v0.1",
+    "heldout_seed_bank_id": "P0B3-HO-v1",
+    "seed_count": 30,
+    "primary_metric": "mean_seed(ICQ-DI)",
+    "threshold_min": 0.15,
+    "mean": 0.2524101694466042,
+    "sample_std_ddof_1": 0.009340808271323851,
+    "median": 0.2522989191334548,
+    "q05": 0.23934134827280118,
+    "q95": 0.2680915247661997,
+    "min": 0.23209107913783666,
+    "max": 0.2746032637641278,
+    "decision": "PASS",
+    "workflow_run": 34065143572,
+    "artifact_name": "icq-ra-p0b3-one-shot",
+    "artifact_id": 9998695614,
+    "artifact_sha256": "dea9cc9bef79faacdd079e8541ad066b27ac9d563ea04d5822508a9f5eb09fe4",
+    "execution_head_sha": "64a93ddc36dfe2a59b3b97bd35701ed50ecaccde",
+    "one_shot_workflow_closed": false
   }
 }

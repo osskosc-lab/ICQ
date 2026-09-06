@@ -2,9 +2,9 @@
   "protocol_id": "ICQ-RA-P0B-3-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-3-v0.1",
   "gate": "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
-  "implementation_status": "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT",
-  "execution_authorized": true,
-  "authorization_status": "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT",
+  "implementation_status": "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING",
+  "execution_authorized": false,
+  "authorization_status": "COMPLETE_CLOSED_FOR_RERUN",
   "design_freeze_head_sha": "93696cdbfb00c20e8adc4254f7866c999ef802af",
   "authorized_parent_head_sha": "9b7ed6eb43e2af3d5f7c325cb2e903ef347857fc",
   "scenario": "DIRECT_ACTIVE",
@@ -86,5 +86,16 @@
     "instruction": "次段階実験開始",
     "scope": "P0B-3_DIRECT_ACTIVE_SENSITIVITY_ONLY",
     "p0b4_authorized": false
-  }
+  },
+  "result": {
+    "decision": "PASS",
+    "mean_seed_icq_di": 0.2524101694466042,
+    "threshold_min": 0.15,
+    "workflow_run": 34065143572,
+    "artifact_id": 9998695614,
+    "artifact_sha256": "dea9cc9bef79faacdd079e8541ad066b27ac9d563ea04d5822508a9f5eb09fe4",
+    "execution_head_sha": "64a93ddc36dfe2a59b3b97bd35701ed50ecaccde"
+  },
+  "one_shot_workflow_close_pending": true,
+  "one_shot_workflow_closed": false
 }
