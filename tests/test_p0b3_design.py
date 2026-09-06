@@ -81,12 +81,12 @@ def test_p0b3_scientific_source_snapshot_is_unchanged():
         assert git_blob_sha(path) == expected_sha, path
 
 
-def test_p0b3_has_no_execution_workflow_or_runner_at_design_freeze():
+def test_p0b3_design_freeze_historically_preceded_execution_implementation():
     d = load("configs/p0b3_design.json")
     assert d["execution_contract"]["qualification_runner_present_at_design_freeze"] is False
     assert d["execution_contract"]["one_shot_workflow_present_at_design_freeze"] is False
-    assert not (ROOT / ".github/workflows/p0b3_execute.yml").exists()
-    assert not (ROOT / "experiments/p0b3_qualify.py").exists()
+    # Runner/workflow may be installed only after the frozen design commit.
+    assert d["design_status"] == "FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION"
 
 
 def test_p0b3_state_transitions_preserve_claim_firewall():

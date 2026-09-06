@@ -1,0 +1,42 @@
+name: ICQ-RA P0B-3 One-Shot Qualification
+
+on:
+  push:
+    paths:
+      - "configs/p0b3_execution.json"
+      - "experiments/p0b3_qualify.py"
+      - ".github/workflows/p0b3_execute.yml"
+
+jobs:
+  p0b3-one-shot:
+    if: contains(github.event.head_commit.message, '[P0B3 EXECUTE]')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install -e .
+
+      - name: Execute frozen P0B-3 one-shot
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python -m experiments.p0b3_qualify
+
+      - name: Upload P0B-3 result artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: icq-ra-p0b3-one-shot
+          path: results/p0b3/p0b3_result_raw.json
+          if-no-files-found: warn
