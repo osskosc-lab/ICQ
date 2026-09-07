@@ -2,9 +2,9 @@
   "protocol_id": "ICQ-RA-P0B-4-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-4-v0.1",
   "gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
-  "implementation_status": "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT",
-  "execution_authorized": true,
-  "authorization_status": "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT",
+  "implementation_status": "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING",
+  "execution_authorized": false,
+  "authorization_status": "COMPLETE_CLOSED_FOR_RERUN",
   "design_freeze_head_sha": "395ee5458e005a5ade62eeca83aeff47866dce72",
   "authorized_parent_head_sha": "7fb6d0d1c4101dbcd9ae094a6a92f65693d4e5e5",
   "scenario": "HIDDEN_MODIFIER_PROXY",
@@ -125,5 +125,18 @@
     "scope": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION_ONLY",
     "p0b5_authorized": false,
     "l4_upgrade_authorized": false
-  }
+  },
+  "result": {
+    "decision": "PASS",
+    "phase0a_baseline_mean": 0.2148279779106048,
+    "baseline_threshold_min": 0.15,
+    "direct_mean": 0.010314975030800982,
+    "direct_threshold_max": 0.05,
+    "workflow_run": 34165808251,
+    "artifact_id": 10034099366,
+    "artifact_sha256": "2826093cf4c12c9e74930187413eec3232f2b9a6051b88755fb15c778f34eae8",
+    "execution_head_sha": "f1bde4c55470f48ad4a44daeba034bcbc591e6d6"
+  },
+  "one_shot_workflow_close_pending": true,
+  "one_shot_workflow_closed": false
 }

@@ -205,9 +205,10 @@
     "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
     "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS",
     "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION": "PASS",
-    "P0B-3_DIRECT_ACTIVE_SENSITIVITY": "PASS"
+    "P0B-3_DIRECT_ACTIVE_SENSITIVITY": "PASS",
+    "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION": "PASS"
   },
-  "current_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+  "current_gate": "P0B-5_GATE_REVIEW_AND_FREEZE_DECISION",
   "current_gate_eligible": true,
   "current_gate_execution_authorized": false,
   "p0b01_audit_provenance": {
@@ -259,5 +260,33 @@
     "execution_head_sha": "64a93ddc36dfe2a59b3b97bd35701ed50ecaccde",
     "one_shot_workflow_closed": true,
     "workflow_removal_commit_sha": "0c9a48a9162572d8a69058cea9f5dd14af4c7685"
+  },
+  "p0b4_result": {
+    "protocol_id": "ICQ-RA-P0B-4-v0.1",
+    "heldout_seed_bank_id": "P0B4-HO-v1",
+    "seed_count": 30,
+    "baseline_threshold_min": 0.15,
+    "direct_threshold_max": 0.05,
+    "phase0a_baseline_mean": 0.2148279779106048,
+    "phase0a_baseline_sample_std_ddof_1": 0.009686676633682459,
+    "phase0a_baseline_median": 0.2138082618670108,
+    "phase0a_baseline_q05": 0.2027339410931112,
+    "phase0a_baseline_q95": 0.2312050297319923,
+    "phase0a_baseline_min": 0.19420267808235833,
+    "phase0a_baseline_max": 0.23513774888565356,
+    "direct_mean": 0.010314975030800982,
+    "direct_sample_std_ddof_1": 0.005142900354245091,
+    "direct_median": 0.009577571258797903,
+    "direct_q05": 0.003197070138211475,
+    "direct_q95": 0.01920046583849038,
+    "direct_min": 0.0023662058570749654,
+    "direct_max": 0.021064653546187785,
+    "decision": "PASS",
+    "workflow_run": 34165808251,
+    "artifact_name": "icq-ra-p0b4-one-shot",
+    "artifact_id": 10034099366,
+    "artifact_sha256": "2826093cf4c12c9e74930187413eec3232f2b9a6051b88755fb15c778f34eae8",
+    "execution_head_sha": "f1bde4c55470f48ad4a44daeba034bcbc591e6d6",
+    "one_shot_workflow_closed": false
   }
 }

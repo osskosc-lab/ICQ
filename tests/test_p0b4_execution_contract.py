@@ -9,16 +9,17 @@ def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
-def test_p0b4_execution_is_explicitly_authorized_for_one_shot_only():
+def test_p0b4_execution_is_closed_after_valid_one_shot_result():
     e = load("configs/p0b4_execution.json")
-    assert e["implementation_status"] == "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT"
-    assert e["execution_authorized"] is True
-    assert e["authorization_status"] == "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT"
+    assert e["implementation_status"] == "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING"
+    assert e["execution_authorized"] is False
+    assert e["authorization_status"] == "COMPLETE_CLOSED_FOR_RERUN"
     assert e["authorized_parent_head_sha"] == "7fb6d0d1c4101dbcd9ae094a6a92f65693d4e5e5"
     assert e["one_shot_only"] is True
     assert e["authorization_evidence"]["scope"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION_ONLY"
     assert e["authorization_evidence"]["p0b5_authorized"] is False
     assert e["authorization_evidence"]["l4_upgrade_authorized"] is False
+    assert e["result"]["decision"] == "PASS"
 
 
 def test_p0b4_execution_contract_matches_frozen_design():
@@ -40,12 +41,14 @@ def test_p0b4_execution_contract_matches_frozen_design():
     }
 
 
-def test_p0b4_runner_and_one_shot_workflow_are_installed_after_freeze():
+def test_p0b4_result_is_recorded_and_rerun_is_closed():
     assert (ROOT / "experiments/p0b4_qualify.py").exists()
-    assert (ROOT / ".github/workflows/p0b4_execute.yml").exists()
     e = load("configs/p0b4_execution.json")
-    assert e["execution_authorized"] is True
-    assert not (ROOT / e["result_repo_path"]).exists()
-    assert e["claim_firewall"]["p0b5_execution_authorized"] is False
-    assert e["claim_firewall"]["general_l4_structural_identification_authorized"] is False
-    assert e["claim_firewall"]["qualia_or_phenomenal_claim_authorized"] is False
+    assert e["execution_authorized"] is False
+    assert (ROOT / e["result_repo_path"]).exists()
+    r = load(e["result_repo_path"])
+    assert r["decision"] == "PASS"
+    assert r["workflow_run_attempt"] == 1
+    assert r["p0b5_execution_authorized"] is False
+    assert r["general_l4_structural_identification_authorized"] is False
+    assert r["qualia_or_phenomenal_claim_authorized"] is False

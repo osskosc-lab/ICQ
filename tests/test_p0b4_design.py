@@ -30,9 +30,15 @@ def test_p0b4_prerequisites_and_parent_state_are_exact():
     p = load("configs/phase0b.json")
     for gate, expected in d["prerequisites"].items():
         assert p["completed_gates"][gate] == expected
-    assert p["current_gate"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"
-    assert p["current_gate_eligible"] is True
-    assert p["current_gate_execution_authorized"] is False
+    if "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION" in p["completed_gates"]:
+        assert p["completed_gates"]["P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"] == "PASS"
+        assert p["current_gate"] == "P0B-5_GATE_REVIEW_AND_FREEZE_DECISION"
+        assert p["current_gate_eligible"] is True
+        assert p["current_gate_execution_authorized"] is False
+    else:
+        assert p["current_gate"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"
+        assert p["current_gate_eligible"] is True
+        assert p["current_gate_execution_authorized"] is False
 
 def test_p0b4_seed_bank_is_exact_unique_and_disjoint():
     d = load("configs/p0b4_design.json")

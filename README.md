@@ -339,6 +339,25 @@ artifact    = 9998695614
 This supports DIRECT_ACTIVE synthetic sensitivity only. P0B-4 remains separate and not authorized.
 
 
+## P0B-4 held-out HIDDEN_MODIFIER_PROXY result
+
+```text
+Phase 0A baseline mean ICQ-RA = 0.2148279779106048
+baseline threshold             = 0.15
+
+Direct mean ICQ-DI             = 0.010314975030800982
+direct threshold               = 0.05
+
+decision                       = PASS
+run                            = 34165808251
+artifact                       = 10034099366
+```
+
+The hidden-proxy generator remained ACTIVE-like under the conditioning baseline and Null-like under atomic do(Q), exactly matching the frozen P0B-4 discrimination pattern.
+
+This supports only the declared synthetic hidden-proxy discrimination pattern. P0B-5 remains a separate gate review and is not authorized by this result.
+
+
 ## Claim firewall
 
 The following claims are prohibited:
@@ -512,9 +531,10 @@ P0B-0 PASS
 P0B-1 PASS
 P0B-2 PASS
 P0B-3 PASS
+P0B-4 PASS
 
 CURRENT GATE:
-P0B-4 HIDDEN_MODIFIER_PROXY FALSIFICATION
+P0B-5 GATE REVIEW AND FREEZE DECISION
 
 ELIGIBLE:
 YES
@@ -597,6 +617,7 @@ See:
 - [P0B-0 / P0B-1 audit result](docs/p0b01_audit_result.md)
 - [P0B-3 frozen experimental design](docs/p0b3_design.md)
 - [P0B-3 result](docs/p0b3_result.md)
+- [P0B-4 result](docs/p0b4_result.md)
 
 ---
 
