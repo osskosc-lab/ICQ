@@ -87,3 +87,11 @@ NOT AUTHORIZED
 ```
 
 No L4 upgrade is authorized before P0B-5.
+
+## One-shot workflow closure
+
+```text
+workflow removed after valid result: true
+removal commit: 2ecb5b47b534e6867b90b06876fb2dc49953f2fe
+rerun authorization: CLOSED
+```

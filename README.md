@@ -633,3 +633,5 @@ See:
 - [Phase 0A frozen release record](docs/releases/phase0a-v0.1-frozen.md)
 
 P0B-3 one-shot workflow removed after valid result at commit `0c9a48a9162572d8a69058cea9f5dd14af4c7685`; rerun authorization is closed.
+
+P0B-4 one-shot workflow removed after valid result at commit `2ecb5b47b534e6867b90b06876fb2dc49953f2fe`; rerun authorization is closed.

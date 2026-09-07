@@ -2,7 +2,7 @@
   "protocol_id": "ICQ-RA-P0B-4-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-4-v0.1",
   "gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
-  "implementation_status": "COMPLETE_VALID_RESULT_CAPTURED_CLOSE_PENDING",
+  "implementation_status": "COMPLETE_CLOSED_AFTER_VALID_RESULT",
   "execution_authorized": false,
   "authorization_status": "COMPLETE_CLOSED_FOR_RERUN",
   "design_freeze_head_sha": "395ee5458e005a5ade62eeca83aeff47866dce72",
@@ -137,6 +137,7 @@
     "artifact_sha256": "2826093cf4c12c9e74930187413eec3232f2b9a6051b88755fb15c778f34eae8",
     "execution_head_sha": "f1bde4c55470f48ad4a44daeba034bcbc591e6d6"
   },
-  "one_shot_workflow_close_pending": true,
-  "one_shot_workflow_closed": false
+  "one_shot_workflow_close_pending": false,
+  "one_shot_workflow_closed": true,
+  "workflow_removal_commit_sha": "2ecb5b47b534e6867b90b06876fb2dc49953f2fe"
 }
