@@ -1,0 +1,122 @@
+{
+  "protocol_id": "ICQ-RA-P0B-4-EXEC-v0.1",
+  "parent_protocol_id": "ICQ-RA-P0B-4-v0.1",
+  "gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+  "implementation_status": "IMPLEMENTED_AWAITING_AUTHORIZATION",
+  "execution_authorized": false,
+  "authorization_status": "NOT_AUTHORIZED",
+  "design_freeze_head_sha": "395ee5458e005a5ade62eeca83aeff47866dce72",
+  "authorized_parent_head_sha": null,
+  "scenario": "HIDDEN_MODIFIER_PROXY",
+  "dag": "Z -> Q; Z x U -> Y; Q -/-> Y",
+  "heldout_seed_bank_id": "P0B4-HO-v1",
+  "heldout_seeds": [
+    6401,
+    6402,
+    6403,
+    6404,
+    6405,
+    6406,
+    6407,
+    6408,
+    6409,
+    6410,
+    6411,
+    6412,
+    6413,
+    6414,
+    6415,
+    6416,
+    6417,
+    6418,
+    6419,
+    6420,
+    6421,
+    6422,
+    6423,
+    6424,
+    6425,
+    6426,
+    6427,
+    6428,
+    6429,
+    6430
+  ],
+  "expected_seed_count": 30,
+  "primary_metrics": {
+    "phase0a_baseline": "mean_seed(Phase0A ICQ-RA)",
+    "direct_intervention": "mean_seed(ICQ-DI)"
+  },
+  "baseline_threshold_min": 0.15,
+  "direct_threshold_max": 0.05,
+  "one_shot_only": true,
+  "required_event": "push",
+  "required_run_attempt": 1,
+  "required_commit_message_token": "[P0B4 EXECUTE]",
+  "artifact_name": "icq-ra-p0b4-one-shot",
+  "result_path": "results/p0b4/p0b4_result_raw.json",
+  "result_repo_path": "configs/p0b4_result.json",
+  "scientific_source_snapshot": {
+    "experiments/phase0b.py": "2ae52c8a30a3bcb8137ccf0fa6f512f1064512fc",
+    "icq_ra/core.py": "81dda62577a21c149b46f411ed4018cace38ac61",
+    "icq_ra/direct_intervention.py": "17f1fa3f224b975b5d3754aac43ffe93ed578f79",
+    "requirements.txt": "0da304d5ea05d410163d39c72fcabb67573f3a88",
+    "pyproject.toml": "55ac1e2b774cfb8b6a3c16e50c92d900bda05173"
+  },
+  "parent_config_semantic_freeze": {
+    "generator_parameters": {
+      "n_per_arm": 6000,
+      "intervention_values": [
+        -1,
+        0,
+        1
+      ],
+      "history_values": [
+        0,
+        1
+      ],
+      "intervention_main_effect": 0.7,
+      "history_effect": 1.4,
+      "direct_q_coupling": 0.9,
+      "hidden_modifier_strength": 0.9,
+      "q_proxy_flip_probability": 0.05,
+      "noise_sigma": 1
+    },
+    "estimator_parameters": {
+      "histogram_min": -5,
+      "histogram_max": 5,
+      "histogram_bins": 80,
+      "min_cell": 100,
+      "n_permutations": 20,
+      "estimator_seed_offset": 1200000
+    }
+  },
+  "preflight": {
+    "require_design_status": "FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION",
+    "require_phase0b_current_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+    "require_prerequisites_pass": [
+      "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT",
+      "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT",
+      "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION",
+      "P0B-3_DIRECT_ACTIVE_SENSITIVITY"
+    ],
+    "forbid_existing_result_repo_path": true,
+    "forbid_seed_replacement": true,
+    "forbid_rerun_after_valid_result": true
+  },
+  "result_decision": {
+    "PASS": "baseline_mean >= 0.15 AND direct_mean <= 0.05",
+    "FAIL_BASELINE_REPRODUCTION": "baseline_mean < 0.15 AND direct_mean <= 0.05",
+    "FAIL_DIRECT_FALSE_POSITIVE": "baseline_mean >= 0.15 AND direct_mean > 0.05",
+    "FAIL_BOTH": "baseline_mean < 0.15 AND direct_mean > 0.05",
+    "STOP_INTEGRITY_NO_SCIENTIFIC_DECISION": "any preflight or completeness failure"
+  },
+  "claim_firewall": {
+    "p0b5_execution_authorized": false,
+    "directly_intervenable_synthetic_q_l4_upgrade_authorized_before_p0b5": false,
+    "general_l4_structural_identification_authorized": false,
+    "real_system_identification_authorized": false,
+    "confirmatory_real_data_run_authorized": false,
+    "qualia_or_phenomenal_claim_authorized": false
+  }
+}

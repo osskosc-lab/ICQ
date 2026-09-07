@@ -8,6 +8,7 @@ on:
       - "configs/p0b3_design.json"
       - "configs/p0b3_execution.json"
       - "configs/p0b4_design.json"
+      - "configs/p0b4_execution.json"
       - "docs/phase0b_*.md"
       - "docs/p0b3_design.md"
       - "docs/p0b4_design.md"
@@ -16,11 +17,13 @@ on:
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/p0b3_qualify.py"
+      - "experiments/p0b4_qualify.py"
       - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
       - "tests/test_p0b3_design.py"
       - "tests/test_p0b3_execution_contract.py"
       - "tests/test_p0b4_design.py"
+      - "tests/test_p0b4_execution_contract.py"
       - ".github/workflows/phase0b_design.yml"
   pull_request:
     paths:
@@ -29,6 +32,7 @@ on:
       - "configs/p0b3_design.json"
       - "configs/p0b3_execution.json"
       - "configs/p0b4_design.json"
+      - "configs/p0b4_execution.json"
       - "docs/phase0b_*.md"
       - "docs/p0b3_design.md"
       - "docs/p0b4_design.md"
@@ -37,11 +41,13 @@ on:
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/p0b3_qualify.py"
+      - "experiments/p0b4_qualify.py"
       - "experiments/__init__.py"
       - "tests/test_phase0b_design.py"
       - "tests/test_p0b3_design.py"
       - "tests/test_p0b3_execution_contract.py"
       - "tests/test_p0b4_design.py"
+      - "tests/test_p0b4_execution_contract.py"
       - ".github/workflows/phase0b_design.yml"
 
 jobs:
@@ -61,7 +67,7 @@ jobs:
 
       - name: Phase 0B design tests
         run: |
-          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py tests/test_p0b3_execution_contract.py tests/test_p0b4_design.py
+          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py tests/test_p0b3_execution_contract.py tests/test_p0b4_design.py tests/test_p0b4_execution_contract.py
 
       - name: Phase 0B authorization firewall
         run: |
@@ -75,9 +81,21 @@ jobs:
           assert cfg["confirmatory_real_data_run_authorized"] is False
           assert cfg["l5_phenomenal_claim_authorized"] is False
           p0b4 = json.loads(Path("configs/p0b4_design.json").read_text())
-          assert p0b4["execution_contract"]["execution_authorized"] is False
-          assert not Path("experiments/p0b4_qualify.py").exists()
-          assert not Path(".github/workflows/p0b4_execute.yml").exists()
+          assert p0b4["execution_contract"]["one_shot_only"] is True
+          exec_path = Path("configs/p0b4_execution.json")
+          if exec_path.exists():
+              e = json.loads(exec_path.read_text())
+              assert e["one_shot_only"] is True
+              assert e["claim_firewall"]["p0b5_execution_authorized"] is False
+              assert e["claim_firewall"]["general_l4_structural_identification_authorized"] is False
+              assert e["claim_firewall"]["qualia_or_phenomenal_claim_authorized"] is False
+              if e["execution_authorized"]:
+                  assert e["authorization_status"] == "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT"
+              else:
+                  assert e["authorization_status"] in {
+                      "NOT_AUTHORIZED",
+                      "COMPLETE_CLOSED_FOR_RERUN",
+                  }
           print("PHASE0B_AUTHORIZATION_FIREWALL: PASS")
           PY
 

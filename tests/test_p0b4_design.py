@@ -20,8 +20,10 @@ def test_p0b4_design_is_frozen_but_not_authorized():
     assert d["execution_contract"]["execution_authorized"] is False
     assert d["execution_contract"]["one_shot_only"] is True
     assert d["result_schema_after_authorized_execution"]["result_field_present_now"] is False
-    assert not (ROOT / "experiments/p0b4_qualify.py").exists()
-    assert not (ROOT / ".github/workflows/p0b4_execute.yml").exists()
+    # At the design-freeze commit these files were absent. They may be installed
+    # only by a later execution-contract implementation commit.
+    assert d["execution_contract"]["qualification_runner_present_at_design_freeze"] is False
+    assert d["execution_contract"]["one_shot_workflow_present_at_design_freeze"] is False
 
 def test_p0b4_prerequisites_and_parent_state_are_exact():
     d = load("configs/p0b4_design.json")
