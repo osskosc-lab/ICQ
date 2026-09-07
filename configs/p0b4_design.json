@@ -1,0 +1,233 @@
+{
+  "protocol_id": "ICQ-RA-P0B-4-v0.1",
+  "parent_protocol_id": "ICQ-RA-P0B-v0.1",
+  "gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+  "design_status": "FROZEN_AWAITING_EXPLICIT_ONE_SHOT_AUTHORIZATION",
+  "research_mode": "falsification_first_structural_identification",
+  "purpose": "Test whether the frozen HIDDEN_MODIFIER_PROXY generator reproduces an ACTIVE-like Phase 0A conditioning signal while remaining Null-like under explicit atomic do(Q), on the untouched P0B-4 held-out seed bank.",
+  "prerequisites": {
+    "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT": "PASS",
+    "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT": "PASS",
+    "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION": "PASS",
+    "P0B-3_DIRECT_ACTIVE_SENSITIVITY": "PASS"
+  },
+  "scenario": "HIDDEN_MODIFIER_PROXY",
+  "dag": "Z -> Q; Z x U -> Y; Q -/-> Y",
+  "heldout_seed_bank_id": "P0B4-HO-v1",
+  "heldout_seeds": [
+    6401,
+    6402,
+    6403,
+    6404,
+    6405,
+    6406,
+    6407,
+    6408,
+    6409,
+    6410,
+    6411,
+    6412,
+    6413,
+    6414,
+    6415,
+    6416,
+    6417,
+    6418,
+    6419,
+    6420,
+    6421,
+    6422,
+    6423,
+    6424,
+    6425,
+    6426,
+    6427,
+    6428,
+    6429,
+    6430
+  ],
+  "seed_execution_order": "ASCENDING_EXACT_6401_TO_6430",
+  "expected_seed_count": 30,
+  "primary_metrics": {
+    "phase0a_baseline": {
+      "name": "mean_seed(Phase0A ICQ-RA)",
+      "per_seed_estimator": "experiments.phase0b.estimate_hidden_proxy_baseline(seed, phase0b_config)",
+      "aggregation": "arithmetic mean over exactly 30 held-out per-seed Phase 0A ICQ-RA values",
+      "gate_role": "must reproduce ACTIVE-like response accessibility under conditioning"
+    },
+    "direct_intervention": {
+      "name": "mean_seed(ICQ-DI)",
+      "per_seed_estimator": "experiments.phase0b.estimate_direct_seed('HIDDEN_MODIFIER_PROXY', seed, phase0b_config)",
+      "aggregation": "arithmetic mean over exactly 30 held-out per-seed ICQ-DI values",
+      "gate_role": "must remain Null-like when Q is atomically intervened"
+    },
+    "joint_gate_rule": "BOTH_METRICS_REQUIRED_AND_NO_SUBSTITUTION"
+  },
+  "frozen_thresholds": {
+    "phase0a_baseline": {
+      "operator": ">=",
+      "value": 0.15,
+      "source": "configs/phase0b.json:frozen_thresholds.hidden_proxy_phase0a_baseline_mean_min",
+      "inheritance": "PHASE0A_INHERITED_NO_P0B_TUNING"
+    },
+    "direct_intervention": {
+      "operator": "<=",
+      "value": 0.05,
+      "source": "configs/phase0b.json:frozen_thresholds.hidden_proxy_direct_mean_max",
+      "inheritance": "PHASE0A_INHERITED_NO_P0B_TUNING"
+    }
+  },
+  "decision_rule": {
+    "PASS": "all preflight/integrity checks PASS AND mean_seed(Phase0A ICQ-RA) >= 0.15 AND mean_seed(ICQ-DI) <= 0.05",
+    "FAIL_BASELINE_REPRODUCTION": "all preflight/integrity checks PASS AND mean_seed(Phase0A ICQ-RA) < 0.15 AND mean_seed(ICQ-DI) <= 0.05",
+    "FAIL_DIRECT_FALSE_POSITIVE": "all preflight/integrity checks PASS AND mean_seed(Phase0A ICQ-RA) >= 0.15 AND mean_seed(ICQ-DI) > 0.05",
+    "FAIL_BOTH": "all preflight/integrity checks PASS AND mean_seed(Phase0A ICQ-RA) < 0.15 AND mean_seed(ICQ-DI) > 0.05",
+    "STOP_INTEGRITY_NO_SCIENTIFIC_DECISION": "any preflight, seed-bank, source-freeze, estimator, or result-completeness check fails"
+  },
+  "descriptive_outputs": {
+    "decision_use": "NONE_EXCEPT_TWO_FROZEN_MEANS",
+    "statistics_per_metric": [
+      "n",
+      "mean",
+      "sample_std_ddof_1",
+      "median",
+      "q05_numpy_linear",
+      "q95_numpy_linear",
+      "min",
+      "max"
+    ]
+  },
+  "preflight_checks": [
+    "parent protocol id exact",
+    "current gate is P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+    "P0B-0/P0B-1/P0B-2/P0B-3 recorded PASS",
+    "execution authorization explicitly true only in a future authorization commit",
+    "held-out seed bank equals exact ascending integers 6401-6430",
+    "held-out seeds are unique and count is exactly 30",
+    "P0B-4 seeds are disjoint from debug, P0B-2, P0B-3, and Phase 0A used seed namespaces",
+    "scenario is exactly HIDDEN_MODIFIER_PROXY",
+    "DAG is exactly Z -> Q; Z x U -> Y; Q -/-> Y",
+    "Phase 0A baseline threshold equals frozen 0.15 with >= operator",
+    "ICQ-DI threshold equals frozen 0.05 with <= operator",
+    "scientific source Git blob SHAs match frozen scientific_source_snapshot",
+    "no P0B-4 result field exists before execution",
+    "no P0B-4 qualification runner or one-shot workflow exists at design freeze"
+  ],
+  "scientific_source_snapshot": {
+    "experiments/phase0b.py": "2ae52c8a30a3bcb8137ccf0fa6f512f1064512fc",
+    "icq_ra/core.py": "81dda62577a21c149b46f411ed4018cace38ac61",
+    "icq_ra/direct_intervention.py": "17f1fa3f224b975b5d3754aac43ffe93ed578f79",
+    "requirements.txt": "0da304d5ea05d410163d39c72fcabb67573f3a88",
+    "pyproject.toml": "55ac1e2b774cfb8b6a3c16e50c92d900bda05173"
+  },
+  "execution_contract": {
+    "execution_authorized": false,
+    "one_shot_only": true,
+    "routine_ci_must_not_execute_heldout_seeds": true,
+    "qualification_runner_present_at_design_freeze": false,
+    "one_shot_workflow_present_at_design_freeze": false,
+    "authorization_requirement": "EXPLICIT_USER_AUTHORIZATION_IN_A_LATER_TURN",
+    "post_execution_workflow_policy": "REMOVE_ONE_SHOT_WORKFLOW_IMMEDIATELY_AFTER_RESULT_CAPTURE",
+    "seed_replacement_allowed": false,
+    "rerun_after_valid_result_allowed": false,
+    "post_result_threshold_change_allowed": false,
+    "post_result_generator_change_allowed": false,
+    "post_result_estimator_change_allowed": false
+  },
+  "result_schema_after_authorized_execution": {
+    "required_fields": [
+      "protocol_id",
+      "heldout_seed_bank_id",
+      "execution_head_sha",
+      "n",
+      "per_seed_phase0a_icq_ra",
+      "per_seed_icq_di",
+      "phase0a_baseline_mean",
+      "phase0a_baseline_sample_std_ddof_1",
+      "phase0a_baseline_median",
+      "phase0a_baseline_q05",
+      "phase0a_baseline_q95",
+      "phase0a_baseline_min",
+      "phase0a_baseline_max",
+      "direct_mean",
+      "direct_sample_std_ddof_1",
+      "direct_median",
+      "direct_q05",
+      "direct_q95",
+      "direct_min",
+      "direct_max",
+      "baseline_threshold_min",
+      "direct_threshold_max",
+      "decision",
+      "artifact_name",
+      "artifact_id",
+      "artifact_sha256",
+      "workflow_run",
+      "scientific_source_snapshot"
+    ],
+    "result_field_present_now": false
+  },
+  "stop_conditions": [
+    "SOURCE_SNAPSHOT_MISMATCH",
+    "HELDOUT_SEED_OVERLAP_OR_PRIOR_P0B4_EXECUTION",
+    "SEED_COUNT_OR_ORDER_MISMATCH",
+    "SCENARIO_OR_DAG_MISMATCH",
+    "THRESHOLD_MISMATCH",
+    "CURRENT_GATE_MISMATCH",
+    "MISSING_PREREQUISITE_PASS",
+    "INCOMPLETE_OR_DUPLICATE_SEED_RESULT",
+    "POST_RESULT_THRESHOLD_GENERATOR_OR_ESTIMATOR_CHANGE"
+  ],
+  "next_state_if_pass": {
+    "completed_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION=PASS",
+    "next_gate": "P0B-5_GATE_REVIEW_AND_FREEZE_DECISION",
+    "next_gate_eligible": true,
+    "next_gate_execution_authorized": false,
+    "l4_upgrade_authorized_before_p0b5": false
+  },
+  "next_state_if_fail": {
+    "completed_gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION=FAIL_*",
+    "phase0b_scientific_support": false,
+    "p0b5_gate_review_required": true,
+    "general_l4_upgrade_authorized": false
+  },
+  "claim_firewall": {
+    "p0b4_pass_claim_ceiling": "HIDDEN_PROXY_SYNTHETIC_DISCRIMINATION_PATTERN_ONLY",
+    "general_l4_structural_identification_authorized": false,
+    "directly_intervenable_synthetic_q_l4_upgrade_authorized_before_p0b5": false,
+    "real_system_identification_authorized": false,
+    "confirmatory_real_data_run_authorized": false,
+    "consciousness_claim_authorized": false,
+    "qualia_or_phenomenal_claim_authorized": false
+  },
+  "scientific_source_snapshot_policy": "CODE_AND_DEPENDENCY_BLOBS_EXACT; STATE_BEARING_PARENT_CONFIG_FROZEN_BY_SEMANTIC_FIELDS",
+  "parent_config_semantic_freeze": {
+    "rationale": "configs/phase0b.json carries gate/result state metadata and may receive non-scientific merge-state updates; P0B-4 freezes its scientific content by exact field values instead of whole-file blob identity.",
+    "generator_parameters": {
+      "n_per_arm": 6000,
+      "intervention_values": [
+        -1,
+        0,
+        1
+      ],
+      "history_values": [
+        0,
+        1
+      ],
+      "intervention_main_effect": 0.7,
+      "history_effect": 1.4,
+      "direct_q_coupling": 0.9,
+      "hidden_modifier_strength": 0.9,
+      "q_proxy_flip_probability": 0.05,
+      "noise_sigma": 1
+    },
+    "estimator_parameters": {
+      "histogram_min": -5,
+      "histogram_max": 5,
+      "histogram_bins": 80,
+      "min_cell": 100,
+      "n_permutations": 20,
+      "estimator_seed_offset": 1200000
+    }
+  }
+}

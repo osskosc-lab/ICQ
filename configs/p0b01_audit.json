@@ -1,0 +1,51 @@
+{
+  "protocol_id": "ICQ-RA-P0B-01-v0.1",
+  "parent_protocol_id": "ICQ-RA-P0B-v0.1",
+  "status": "EXECUTION_AUTHORIZED_FOR_P0B0_AND_P0B1_ONLY",
+  "authorized_gates": [
+    "P0B-0_PROTOCOL_AND_IMPLEMENTATION_AUDIT",
+    "P0B-1_ATOMIC_DO_Q_INTEGRITY_AUDIT"
+  ],
+  "locked_gates": [
+    "P0B-2_INACTIVE_DIRECT_NULL_QUALIFICATION",
+    "P0B-3_DIRECT_ACTIVE_SENSITIVITY",
+    "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
+    "P0B-5_GATE_REVIEW_AND_FREEZE_DECISION"
+  ],
+  "debug_seed_namespace": [6101, 6102, 6103],
+  "qualification_seed_namespaces_must_not_be_executed": [
+    "6201-6230",
+    "6301-6330",
+    "6401-6430"
+  ],
+  "p0b0_required_checks": [
+    "parent_protocol_id_match",
+    "protocol_status_is_draft_for_preregistration_audit",
+    "qualification_execution_not_authorized",
+    "confirmatory_real_data_not_authorized",
+    "phenomenal_claim_not_authorized",
+    "gate_order_exact",
+    "seed_namespaces_pairwise_disjoint",
+    "phase0a_seed_namespaces_disjoint",
+    "thresholds_inherited_without_p0b_tuning",
+    "primary_metric_present",
+    "single_primary_baseline_present",
+    "single_primary_falsification_present"
+  ],
+  "p0b1_required_scenarios": [
+    "INACTIVE_DIRECT",
+    "DIRECT_ACTIVE",
+    "HIDDEN_MODIFIER_PROXY"
+  ],
+  "p0b1_integrity_rules": {
+    "INACTIVE_DIRECT": "paired common-random-number do(Q=0) and do(Q=1) responses must be exactly identical",
+    "DIRECT_ACTIVE": "paired response difference must equal declared direct_q_coupling * U within numerical tolerance",
+    "HIDDEN_MODIFIER_PROXY": "paired common-random-number do(Q=0) and do(Q=1) responses must be exactly identical"
+  },
+  "numerical_tolerance": 1e-12,
+  "claim_ceiling": "P0B0_PROTOCOL_IMPLEMENTATION_AND_P0B1_ATOMIC_DO_Q_INTEGRITY_ONLY",
+  "qualification_execution_authorized": false,
+  "confirmatory_real_data_run_authorized": false,
+  "l4_upgrade_authorized": false,
+  "qualia_claim_authorized": false
+}
