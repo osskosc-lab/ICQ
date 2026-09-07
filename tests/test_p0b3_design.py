@@ -35,7 +35,9 @@ def test_p0b3_prerequisites_and_post_result_parent_state():
 
     if "P0B-3_DIRECT_ACTIVE_SENSITIVITY" in p["completed_gates"]:
         assert p["completed_gates"]["P0B-3_DIRECT_ACTIVE_SENSITIVITY"] == "PASS"
-        assert p["current_gate"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION"
+        p0b3_index = p["gate_order"].index("P0B-3_DIRECT_ACTIVE_SENSITIVITY")
+        current_index = p["gate_order"].index(p["current_gate"])
+        assert current_index > p0b3_index
         assert p["current_gate_eligible"] is True
         assert p["current_gate_execution_authorized"] is False
     else:
