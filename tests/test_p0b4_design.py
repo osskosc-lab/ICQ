@@ -9,7 +9,7 @@ def load(path):
 
 def git_blob_sha(path):
     data = (ROOT / path).read_bytes()
-    header = f"blob {len(data)}\\0".encode("utf-8")
+    header = f"blob {len(data)}\0".encode("utf-8")
     return hashlib.sha1(header + data).hexdigest()
 
 def test_p0b4_design_is_frozen_but_not_authorized():
