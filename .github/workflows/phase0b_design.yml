@@ -7,9 +7,12 @@ on:
       - "configs/p0b01_audit.json"
       - "configs/p0b3_design.json"
       - "configs/p0b3_execution.json"
+      - "configs/p0b4_design.json"
       - "docs/phase0b_*.md"
       - "docs/p0b3_design.md"
+      - "docs/p0b4_design.md"
       - "icq_ra/direct_intervention.py"
+      - "icq_ra/core.py"
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/p0b3_qualify.py"
@@ -17,6 +20,7 @@ on:
       - "tests/test_phase0b_design.py"
       - "tests/test_p0b3_design.py"
       - "tests/test_p0b3_execution_contract.py"
+      - "tests/test_p0b4_design.py"
       - ".github/workflows/phase0b_design.yml"
   pull_request:
     paths:
@@ -24,9 +28,12 @@ on:
       - "configs/p0b01_audit.json"
       - "configs/p0b3_design.json"
       - "configs/p0b3_execution.json"
+      - "configs/p0b4_design.json"
       - "docs/phase0b_*.md"
       - "docs/p0b3_design.md"
+      - "docs/p0b4_design.md"
       - "icq_ra/direct_intervention.py"
+      - "icq_ra/core.py"
       - "experiments/phase0b.py"
       - "experiments/p0b01_audit.py"
       - "experiments/p0b3_qualify.py"
@@ -34,6 +41,7 @@ on:
       - "tests/test_phase0b_design.py"
       - "tests/test_p0b3_design.py"
       - "tests/test_p0b3_execution_contract.py"
+      - "tests/test_p0b4_design.py"
       - ".github/workflows/phase0b_design.yml"
 
 jobs:
@@ -53,7 +61,7 @@ jobs:
 
       - name: Phase 0B design tests
         run: |
-          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py tests/test_p0b3_execution_contract.py
+          pytest -q tests/test_phase0b_design.py tests/test_p0b3_design.py tests/test_p0b3_execution_contract.py tests/test_p0b4_design.py
 
       - name: Phase 0B authorization firewall
         run: |
@@ -66,16 +74,20 @@ jobs:
           assert cfg["qualification_execution_authorized"] is False
           assert cfg["confirmatory_real_data_run_authorized"] is False
           assert cfg["l5_phenomenal_claim_authorized"] is False
+          p0b4 = json.loads(Path("configs/p0b4_design.json").read_text())
+          assert p0b4["execution_contract"]["execution_authorized"] is False
+          assert not Path("experiments/p0b4_qualify.py").exists()
+          assert not Path(".github/workflows/p0b4_execute.yml").exists()
           print("PHASE0B_AUTHORIZATION_FIREWALL: PASS")
           PY
 
       - name: Debug-only DIRECT_ACTIVE smoke
         run: |
-          python -m experiments.phase0b             --config configs/phase0b.json             --scenario DIRECT_ACTIVE             --seed 6101             --out results/phase0b_debug/direct_active_6101.json
+          python -m experiments.phase0b --config configs/phase0b.json --scenario DIRECT_ACTIVE --seed 6101 --out results/phase0b_debug/direct_active_6101.json
 
       - name: Debug-only HIDDEN_MODIFIER_PROXY smoke
         run: |
-          python -m experiments.phase0b             --config configs/phase0b.json             --scenario HIDDEN_MODIFIER_PROXY             --seed 6102             --out results/phase0b_debug/hidden_proxy_6102.json
+          python -m experiments.phase0b --config configs/phase0b.json --scenario HIDDEN_MODIFIER_PROXY --seed 6102 --out results/phase0b_debug/hidden_proxy_6102.json
 
       - name: Qualification seed firewall check
         run: |
@@ -93,7 +105,6 @@ jobs:
           assert not (debug & heldout)
           print("PHASE0B_HELDOUT_SEED_FIREWALL: PASS")
           PY
-
 
       - name: Formal P0B-0 and P0B-1 audit
         run: |
