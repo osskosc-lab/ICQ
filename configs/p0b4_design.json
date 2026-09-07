@@ -114,7 +114,6 @@
     "no P0B-4 qualification runner or one-shot workflow exists at design freeze"
   ],
   "scientific_source_snapshot": {
-    "configs/phase0b.json": "eb27a5ed5f6ebc939b1e4fd38e19b6ee35440ce3",
     "experiments/phase0b.py": "2ae52c8a30a3bcb8137ccf0fa6f512f1064512fc",
     "icq_ra/core.py": "81dda62577a21c149b46f411ed4018cace38ac61",
     "icq_ra/direct_intervention.py": "17f1fa3f224b975b5d3754aac43ffe93ed578f79",
@@ -200,5 +199,35 @@
     "confirmatory_real_data_run_authorized": false,
     "consciousness_claim_authorized": false,
     "qualia_or_phenomenal_claim_authorized": false
+  },
+  "scientific_source_snapshot_policy": "CODE_AND_DEPENDENCY_BLOBS_EXACT; STATE_BEARING_PARENT_CONFIG_FROZEN_BY_SEMANTIC_FIELDS",
+  "parent_config_semantic_freeze": {
+    "rationale": "configs/phase0b.json carries gate/result state metadata and may receive non-scientific merge-state updates; P0B-4 freezes its scientific content by exact field values instead of whole-file blob identity.",
+    "generator_parameters": {
+      "n_per_arm": 6000,
+      "intervention_values": [
+        -1,
+        0,
+        1
+      ],
+      "history_values": [
+        0,
+        1
+      ],
+      "intervention_main_effect": 0.7,
+      "history_effect": 1.4,
+      "direct_q_coupling": 0.9,
+      "hidden_modifier_strength": 0.9,
+      "q_proxy_flip_probability": 0.05,
+      "noise_sigma": 1
+    },
+    "estimator_parameters": {
+      "histogram_min": -5,
+      "histogram_max": 5,
+      "histogram_bins": 80,
+      "min_cell": 100,
+      "n_permutations": 20,
+      "estimator_seed_offset": 1200000
+    }
   }
 }

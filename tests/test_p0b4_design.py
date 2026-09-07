@@ -58,6 +58,9 @@ def test_p0b4_dual_metrics_and_thresholds_are_exactly_inherited():
     assert d["scenario"] == "HIDDEN_MODIFIER_PROXY"
     assert d["dag"] == "Z -> Q; Z x U -> Y; Q -/-> Y"
     assert d["primary_metrics"]["joint_gate_rule"] == "BOTH_METRICS_REQUIRED_AND_NO_SUBSTITUTION"
+    assert d["parent_config_semantic_freeze"]["generator_parameters"] == p["generator_parameters"]
+    assert d["parent_config_semantic_freeze"]["estimator_parameters"] == p["estimator_parameters"]
+    assert d["scientific_source_snapshot_policy"] == "CODE_AND_DEPENDENCY_BLOBS_EXACT; STATE_BEARING_PARENT_CONFIG_FROZEN_BY_SEMANTIC_FIELDS"
     b = d["frozen_thresholds"]["phase0a_baseline"]
     q = d["frozen_thresholds"]["direct_intervention"]
     assert b["operator"] == ">=" and b["value"] == 0.15
