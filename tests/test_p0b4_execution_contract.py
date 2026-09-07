@@ -9,13 +9,16 @@ def load(path):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
-def test_p0b4_execution_implementation_is_not_yet_authorized():
+def test_p0b4_execution_is_explicitly_authorized_for_one_shot_only():
     e = load("configs/p0b4_execution.json")
-    assert e["implementation_status"] == "IMPLEMENTED_AWAITING_AUTHORIZATION"
-    assert e["execution_authorized"] is False
-    assert e["authorization_status"] == "NOT_AUTHORIZED"
-    assert e["authorized_parent_head_sha"] is None
+    assert e["implementation_status"] == "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT"
+    assert e["execution_authorized"] is True
+    assert e["authorization_status"] == "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT"
+    assert e["authorized_parent_head_sha"] == "7fb6d0d1c4101dbcd9ae094a6a92f65693d4e5e5"
     assert e["one_shot_only"] is True
+    assert e["authorization_evidence"]["scope"] == "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION_ONLY"
+    assert e["authorization_evidence"]["p0b5_authorized"] is False
+    assert e["authorization_evidence"]["l4_upgrade_authorized"] is False
 
 
 def test_p0b4_execution_contract_matches_frozen_design():
@@ -41,7 +44,7 @@ def test_p0b4_runner_and_one_shot_workflow_are_installed_after_freeze():
     assert (ROOT / "experiments/p0b4_qualify.py").exists()
     assert (ROOT / ".github/workflows/p0b4_execute.yml").exists()
     e = load("configs/p0b4_execution.json")
-    assert e["execution_authorized"] is False
+    assert e["execution_authorized"] is True
     assert not (ROOT / e["result_repo_path"]).exists()
     assert e["claim_firewall"]["p0b5_execution_authorized"] is False
     assert e["claim_firewall"]["general_l4_structural_identification_authorized"] is False

@@ -2,11 +2,11 @@
   "protocol_id": "ICQ-RA-P0B-4-EXEC-v0.1",
   "parent_protocol_id": "ICQ-RA-P0B-4-v0.1",
   "gate": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION",
-  "implementation_status": "IMPLEMENTED_AWAITING_AUTHORIZATION",
-  "execution_authorized": false,
-  "authorization_status": "NOT_AUTHORIZED",
+  "implementation_status": "IMPLEMENTATION_AUDIT_PASS_AUTHORIZED_FOR_ONE_SHOT",
+  "execution_authorized": true,
+  "authorization_status": "EXPLICITLY_AUTHORIZED_FOR_ONE_SHOT",
   "design_freeze_head_sha": "395ee5458e005a5ade62eeca83aeff47866dce72",
-  "authorized_parent_head_sha": null,
+  "authorized_parent_head_sha": "7fb6d0d1c4101dbcd9ae094a6a92f65693d4e5e5",
   "scenario": "HIDDEN_MODIFIER_PROXY",
   "dag": "Z -> Q; Z x U -> Y; Q -/-> Y",
   "heldout_seed_bank_id": "P0B4-HO-v1",
@@ -118,5 +118,12 @@
     "real_system_identification_authorized": false,
     "confirmatory_real_data_run_authorized": false,
     "qualia_or_phenomenal_claim_authorized": false
+  },
+  "authorization_evidence": {
+    "source": "EXPLICIT_USER_INSTRUCTION_IN_CHAT",
+    "instruction": "0B-4 one-shot 実行の明示的 authorization 次段階実行",
+    "scope": "P0B-4_HIDDEN_MODIFIER_PROXY_FALSIFICATION_ONLY",
+    "p0b5_authorized": false,
+    "l4_upgrade_authorized": false
   }
 }
